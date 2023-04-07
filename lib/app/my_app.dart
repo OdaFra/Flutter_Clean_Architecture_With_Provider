@@ -1,6 +1,5 @@
-import 'package:clean_architecture_with_provider/app/presentation/router/app_routes.dart';
-import 'package:clean_architecture_with_provider/app/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
+import 'presentation/router/router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
