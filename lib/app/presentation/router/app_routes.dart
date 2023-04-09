@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import '../modules/home/views/views.dart';
 import '../modules/modules.dart';
+import '../modules/sign_in/views/views.dart';
 import 'routes.dart';
 
 Map<String, Widget Function(BuildContext)> get appRoutes {
   return {
     Routes.splash: (context) => const Splash(),
+    Routes.signIn: (context) => const SignInView(),
+    Routes.home: (context) => const HomeView(),
   };
 }
