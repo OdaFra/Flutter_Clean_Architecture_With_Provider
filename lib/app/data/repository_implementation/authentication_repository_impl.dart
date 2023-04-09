@@ -3,7 +3,7 @@ import '../../domain/repositories/repositories.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
-  Future<User> getUserData() {
+  Future<User?> getUserData() {
     return Future.value(
       User(),
     );
