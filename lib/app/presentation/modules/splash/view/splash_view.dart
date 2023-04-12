@@ -29,18 +29,26 @@ class _SplashState extends State<Splash> {
       final isSignedIn = await authentication.isSignedIn;
       if (isSignedIn) {
         final user = await authentication.getUserData();
-        if (user != null) {
-          //HOME
-        } else {
-          //Sign In
+        if (mounted) {
+          if (user != null) {
+            _goTo(Routes.home);
+          } else {
+            _goTo(Routes.signIn);
+          }
         }
       } else if (mounted) {
-        Navigator.pushReplacementNamed(
-          context,
-          Routes.signIn,
-        );
+        _goTo(Routes.signIn);
       }
-    } else {}
+    } else {
+      _goTo(Routes.offline);
+    }
+  }
+
+  Future<void> _goTo(String routeName) {
+    return Navigator.pushReplacementNamed(
+      context,
+      routeName,
+    );
   }
 
   @override
