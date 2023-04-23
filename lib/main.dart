@@ -8,7 +8,8 @@ import 'app/domain/repositories/repositories.dart';
 import 'app/my_app.dart';
 
 void main() {
-  runApp(Injector(
+  runApp(
+    Injector(
       authenticationRepository: AuthenticationRepositoryImpl(
         const FlutterSecureStorage(),
       ),
@@ -16,7 +17,9 @@ void main() {
         Connectivity(),
         InternetChecker(),
       ),
-      child: const MyApp()));
+      child: const MyApp(),
+    ),
+  );
 }
 
 class Injector extends InheritedWidget {
