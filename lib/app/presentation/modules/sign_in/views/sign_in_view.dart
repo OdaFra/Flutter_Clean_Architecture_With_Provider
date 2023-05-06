@@ -102,12 +102,13 @@ class _SignInViewState extends State<SignInView> {
     result.when(
       (failure) {
         setState(() {
-          _fetching = true;
+          _fetching = false;
         });
         final message = {
           SignInFailure.notFound: 'Not Found',
           SignInFailure.unauthorized: 'Invalid password',
           SignInFailure.unknown: 'Internal error',
+          SignInFailure.network: 'Network error'
         }[failure];
 
         ScaffoldMessenger.of(context).showSnackBar(
