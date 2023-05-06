@@ -4,13 +4,14 @@ import '../../core/utils/either.dart';
 import '../../core/enums/signInFailure.dart';
 import '../../domain/models/user.dart';
 import '../../domain/repositories/repositories.dart';
+import '../services/remote/authentication_api.dart';
 
 const _key = 'sessionId';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
+  AuthenticationRepositoryImpl(this._secureStorage, this._authenticationApi);
   final FlutterSecureStorage _secureStorage;
-
-  AuthenticationRepositoryImpl(this._secureStorage);
+  final AuthenticationApi _authenticationApi;
 
   @override
   Future<User?> getUserData() {
@@ -30,18 +31,46 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     String username,
     String password,
   ) async {
-    if (username != 'test') {
-      return Either.left(SignInFailure.notFound);
-    }
-    if (password != '123456') {
-      return Either.left(SignInFailure.unauthorized);
-    }
+    final requestToken = await _authenticationApi.createRequestToken();
 
-    await _secureStorage.write(key: _key, value: '123');
-
-    return Either.right(
-      User(),
+    if (requestToken == null) {
+      return Either.left(SignInFailure.unknown);
+    }
+    final loginResult = await _authenticationApi.createSessionWithLogin(
+      username: username,
+      password: password,
+      requestToken: requestToken,
     );
+
+    return loginResult.when(
+      (failure) {
+        return Either.left(failure);
+      },
+      (newRequestToken) {
+        return Either.right(
+          User(),
+        );
+      },
+    );
+
+    /**
+   * Ejemplo para 
+   */
+    // print('🔥requestToken:::$requestToken');
+    // await Future.delayed(const Duration(seconds: 2));
+
+    // if (username != 'test') {
+    //   return Either.left(SignInFailure.notFound);
+    // }
+    // if (password != '123456') {
+    //   return Either.left(SignInFailure.unauthorized);
+    // }
+
+    // await _secureStorage.write(key: _key, value: '123');
+
+    // return Either.right(
+    //   User(),
+    // );
   }
 
   @override
