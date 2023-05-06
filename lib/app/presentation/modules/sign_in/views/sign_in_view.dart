@@ -50,12 +50,12 @@ class _SignInViewState extends State<SignInView> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         setState(() {
-                          _password = value.replaceAll(' ', '').toLowerCase();
+                          _password = value.replaceAll(' ', '');
                         });
                       },
                       validator: (value) {
-                        value = value?.replaceAll(' ', '').toLowerCase();
-                        if (value!.length < 4) {
+                        value = value?.replaceAll(' ', '') ?? '';
+                        if (value.length < 4) {
                           return 'Invalid password';
                         }
                         return null;
