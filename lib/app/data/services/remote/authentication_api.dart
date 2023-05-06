@@ -79,4 +79,32 @@ class AuthenticationApi {
       );
     }
   }
+
+  Future<Either<SignInFailure, String>> createSession(
+      String requestToken) async {
+    try {
+      final response = await _client.post(
+        Uri.parse('$_baseUrl/authentication/session/new?api_key=$_apiKey'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(
+          {
+            'request_token': requestToken,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final json = Map<String, dynamic>.from(
+          jsonDecode(response.body),
+        );
+        final sessionId = json['session_id'] as String;
+        return Either.right(sessionId);
+      }
+      return Either.left(SignInFailure.unknown);
+    } catch (e) {
+      if (e is SocketException) {
+        return Either.left(SignInFailure.network);
+      }
+      return Either.left(SignInFailure.unknown);
+    }
+  }
 }
