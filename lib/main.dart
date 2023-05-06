@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'app/data/repository_implementation/authentication_repository_impl.dart';
 import 'app/data/repository_implementation/connectivity_repository_impl.dart';
@@ -7,7 +8,8 @@ import 'app/data/services/remote/internet_checker.dart';
 import 'app/domain/repositories/repositories.dart';
 import 'app/my_app.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
   runApp(
     Injector(
       authenticationRepository: AuthenticationRepositoryImpl(
