@@ -5,11 +5,13 @@ import 'package:http/http.dart';
 import '../../core/utils/utils.dart';
 
 class HttpManagement {
-  HttpManagement(
-    this._client,
-    this._baseUrl,
-    this._apiKey,
-  );
+  HttpManagement({
+    required Client client,
+    required String baseUrl,
+    required String apiKey,
+  })  : _client = client,
+        _baseUrl = baseUrl,
+        _apiKey = apiKey;
 
   final Client _client;
   final String _baseUrl;
