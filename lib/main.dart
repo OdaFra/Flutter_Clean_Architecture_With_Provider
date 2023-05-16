@@ -19,9 +19,9 @@ void main() async {
         const FlutterSecureStorage(),
         AuthenticationApi(
           HttpManagement(
-            http.Client(),
-            'https://api.themoviedb.org/3',
-            dotenv.env['TMDB_KEY']!,
+            client: http.Client(),
+            baseUrl: 'https://api.themoviedb.org/3',
+            apiKey: dotenv.env['TMDB_KEY']!,
           ),
         ),
       ),
