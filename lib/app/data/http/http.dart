@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -21,6 +22,7 @@ class HttpManagement {
     HttpMethod method = HttpMethod.get,
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
+    Map<String, dynamic> body = const {},
     bool useApiKey = true,
   }) async {
     try {
@@ -47,7 +49,7 @@ class HttpManagement {
         'Content-Type': 'application/json',
         ...headers,
       };
-
+      final String bodyString = jsonEncode(body);
       switch (method) {
         case HttpMethod.get:
           await _client.get(url);
@@ -56,18 +58,21 @@ class HttpManagement {
           await _client.post(
             url,
             headers: headers,
+            body: bodyString,
           );
           break;
         case HttpMethod.patch:
           await _client.patch(
             url,
             headers: headers,
+            body: bodyString,
           );
           break;
         case HttpMethod.delete:
           await _client.delete(
             url,
             headers: headers,
+            body: bodyString,
           );
           break;
         case HttpMethod.put:
