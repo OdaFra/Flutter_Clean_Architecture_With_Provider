@@ -14,16 +14,27 @@ class AuthenticationApi {
   // final _apiKey = dotenv.env['TMDB_KEY'];
 
   //Para obtener el token
-  Future<String?> createRequestToken() async {
+  Future<Either<SignInFailure, String>> createRequestToken() async {
     final result = await _http.request('/authentication/token/new');
 
     return result.when(
-      (failure) => null,
+      (failure) {
+        if (failure.exception is NetworKException) {
+          return Either.left(
+            SignInFailure.network,
+          );
+        }
+        return Either.left(
+          SignInFailure.unknown,
+        );
+      },
       (responseBody) {
         final json = Map<String, dynamic>.from(
           jsonDecode(responseBody),
         );
-        return json['request_token'] as String;
+        return Either.right(
+          json['request_token'] as String,
+        );
       },
     );
 
