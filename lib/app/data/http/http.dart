@@ -19,8 +19,9 @@ class HttpManagement {
 
   late final Response response;
 
-  Future<Either<HttpFailure, String>> request(
+  Future<Either<HttpFailure, R>> request<R>(
     String path, {
+    required R Function(String responseBody) onSuccess,
     HttpMethod method = HttpMethod.get,
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
@@ -89,7 +90,9 @@ class HttpManagement {
 
       if (statusCode >= 200 && statusCode < 300) {
         return Either.right(
-          response.body,
+          onSuccess(
+            response.body,
+          ),
         );
       }
 
