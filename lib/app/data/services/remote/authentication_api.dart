@@ -13,29 +13,39 @@ class AuthenticationApi {
   // final _baseUrl = 'https://api.themoviedb.org/3';
   // final _apiKey = dotenv.env['TMDB_KEY'];
 
+  Either<SignInFailure, String> _handleFailure(HttpFailure failure) {
+    if (failure.statusCode != null) {
+      switch (failure.statusCode!) {
+        case 401:
+          return Either.left(SignInFailure.unauthorized);
+        case 404:
+          return Either.left(SignInFailure.notFound);
+        default:
+          return Either.left(SignInFailure.unknown);
+      }
+    }
+
+    if (failure.exception is NetworKException) {
+      return Either.left(SignInFailure.network);
+    }
+    return Either.left(SignInFailure.unknown);
+  }
+
   //Para obtener el token
   Future<Either<SignInFailure, String>> createRequestToken() async {
-    final result = await _http.request('/authentication/token/new');
-
-    return result.when(
-      (failure) {
-        if (failure.exception is NetworKException) {
-          return Either.left(
-            SignInFailure.network,
-          );
-        }
-        return Either.left(
-          SignInFailure.unknown,
-        );
-      },
-      (responseBody) {
+    final result = await _http.request(
+      '/authentication/token/new',
+      onSuccess: (responseBody) {
         final json = Map<String, dynamic>.from(
           jsonDecode(responseBody),
         );
-        return Either.right(
-          json['request_token'] as String,
-        );
+        return json['request_token'] as String;
       },
+    );
+
+    return result.when(
+      _handleFailure,
+      (requestToken) => Either.right(requestToken),
     );
 
     // Codigo de ejemplo anterior para obtener el Request Token
@@ -66,6 +76,12 @@ class AuthenticationApi {
       required String requestToken}) async {
     final result = await _http.request(
       '/authentication/token/validate_with_login',
+      onSuccess: (responseBody) {
+        final json = Map<String, dynamic>.from(
+          jsonDecode(responseBody),
+        );
+        return json['request_token'] as String;
+      },
       method: HttpMethod.post,
       body: {
         'username': username,
@@ -75,31 +91,8 @@ class AuthenticationApi {
     );
 
     return result.when(
-      (failure) {
-        if (failure.statusCode != null) {
-          switch (failure.statusCode!) {
-            case 401:
-              return Either.left(SignInFailure.unauthorized);
-            case 404:
-              return Either.left(SignInFailure.notFound);
-            default:
-              return Either.left(SignInFailure.unknown);
-          }
-        }
-
-        if (failure.exception is NetworKException) {
-          return Either.left(SignInFailure.network);
-        }
-        return Either.left(SignInFailure.unknown);
-      },
-      (responseBody) {
-        final json = Map<String, dynamic>.from(
-          jsonDecode(responseBody),
-        );
-        final requestToken = json['request_token'] as String;
-
-        return Either.right(requestToken);
-      },
+      (failure) => _handleFailure(failure),
+      (newRequestToken) => Either.right(newRequestToken),
     );
 
     // try {
@@ -150,26 +143,17 @@ class AuthenticationApi {
       body: {
         'request_token': requestToken,
       },
-    );
-
-    return result.when(
-      (failure) {
-        if (failure.exception is NetworKException) {
-          return Either.left(
-            SignInFailure.network,
-          );
-        }
-        return Either.left(
-          SignInFailure.unknown,
-        );
-      },
-      (responseBody) {
+      onSuccess: (responseBody) {
         final json = Map<String, dynamic>.from(
           jsonDecode(responseBody),
         );
-        final sessionId = json['session_id'] as String;
-        return Either.right(sessionId);
+        return json['session_id'] as String;
       },
+    );
+
+    return result.when(
+      (failure) => _handleFailure(failure),
+      (sessionId) => Either.right(sessionId),
     );
 
     // try {
