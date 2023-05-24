@@ -1,8 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import '../../core/utils/utils.dart';
+
+part 'failure.dart';
+part 'parse_response_body.dart';
+part 'logs.dart';
+
+enum HttpMethod { get, post, patch, delete, put }
 
 class HttpManagement {
   HttpManagement({
@@ -17,8 +25,6 @@ class HttpManagement {
   final String _baseUrl;
   final String _apiKey;
 
-  late final Response response;
-
   Future<Either<HttpFailure, R>> request<R>(
     String path, {
     required R Function(String responseBody) onSuccess,
@@ -28,6 +34,9 @@ class HttpManagement {
     Map<String, dynamic> body = const {},
     bool useApiKey = true,
   }) async {
+    Map<String, dynamic> logs = const {};
+    StackTrace? stackTrace;
+
     try {
       if (useApiKey) {
         queryParameters = {
@@ -52,86 +61,103 @@ class HttpManagement {
         'Content-Type': 'application/json',
         ...headers,
       };
-      final String bodyString = jsonEncode(body);
+
+      late final Response response;
+      final bodyString = jsonEncode(body);
+
+      logs = {
+        'url': url.toString(),
+        'method': method.name,
+        'body': body,
+      };
+
       switch (method) {
         case HttpMethod.get:
-          await _client.get(url);
+          response = await _client.get(url);
           break;
         case HttpMethod.post:
-          await _client.post(
+          response = await _client.post(
             url,
             headers: headers,
             body: bodyString,
           );
           break;
         case HttpMethod.patch:
-          await _client.patch(
+          response = await _client.patch(
             url,
             headers: headers,
             body: bodyString,
           );
           break;
         case HttpMethod.delete:
-          await _client.delete(
+          response = await _client.delete(
             url,
             headers: headers,
             body: bodyString,
           );
           break;
         case HttpMethod.put:
-          await _client.put(
+          response = await _client.put(
             url,
+            body: bodyString,
             headers: headers,
           );
           break;
       }
 
       final statusCode = response.statusCode;
+      final responseBody = _parseResponseBody(
+        response.body,
+      );
+
+      print('Este es el status actual $statusCode');
 
       if (statusCode >= 200 && statusCode < 300) {
         return Either.right(
-          onSuccess(
-            response.body,
-          ),
+          onSuccess(responseBody),
         );
       }
+
+      logs = {
+        ...logs,
+        'startTime': DateTime.now().toString(),
+        'statusCode': statusCode,
+        'responseBody': responseBody
+      };
 
       return Either.left(
         HttpFailure(statusCode: statusCode),
       );
-    } catch (e) {
+    } catch (e, s) {
+      stackTrace = s;
+      logs = {
+        ...logs,
+        'exception': e.runtimeType,
+      };
+
       if (e is SocketException || e is ClientException) {
+        logs = {
+          ...logs,
+          'exception': 'NetworKException',
+        };
         return Either.left(
           HttpFailure(
             exception: NetworKException(),
           ),
         );
       }
+
       return Either.left(
         HttpFailure(
           exception: e,
         ),
       );
+    } finally {
+      logs = {
+        ...logs,
+        'endTime': DateTime.now().toString(),
+      };
+      // _printLogs(logs, stackTrace);
     }
   }
-}
-
-class HttpFailure {
-  HttpFailure({
-    this.statusCode,
-    this.exception,
-  });
-
-  final int? statusCode;
-  final Object? exception;
-}
-
-class NetworKException {}
-
-enum HttpMethod {
-  get,
-  post,
-  patch,
-  delete,
-  put,
 }
