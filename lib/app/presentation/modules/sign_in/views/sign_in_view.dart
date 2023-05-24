@@ -65,7 +65,7 @@ class _SignInViewState extends State<SignInView> {
                     const SizedBox(height: 20),
                     Builder(builder: (context) {
                       if (_fetching) {
-                        return const CircularProgressIndicator.adaptive();
+                        return const CircularProgressIndicator();
                       }
                       return MaterialButton(
                         onPressed: () {
