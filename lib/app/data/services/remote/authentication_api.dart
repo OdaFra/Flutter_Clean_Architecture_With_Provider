@@ -1,19 +1,14 @@
-import 'dart:convert';
-// import 'dart:io';
-
-// import 'package:http/http.dart';
-
 import '../../../core/enums/enum.dart';
 import '../../../core/utils/utils.dart';
-import '../../http/http.dart';
+import '../../http/HttpManagement.dart';
 
 class AuthenticationApi {
   AuthenticationApi(this._http);
+
   final HttpManagement _http;
-  // final _baseUrl = 'https://api.themoviedb.org/3';
-  // final _apiKey = dotenv.env['TMDB_KEY'];
 
   Either<SignInFailure, String> _handleFailure(HttpFailure failure) {
+    print('Code is ${failure.statusCode}');
     if (failure.statusCode != null) {
       switch (failure.statusCode!) {
         case 401:
@@ -24,7 +19,6 @@ class AuthenticationApi {
           return Either.left(SignInFailure.unknown);
       }
     }
-
     if (failure.exception is NetworKException) {
       return Either.left(SignInFailure.network);
     }
@@ -36,9 +30,7 @@ class AuthenticationApi {
     final result = await _http.request(
       '/authentication/token/new',
       onSuccess: (responseBody) {
-        final json = Map<String, dynamic>.from(
-          jsonDecode(responseBody),
-        );
+        final json = responseBody as Map;
         return json['request_token'] as String;
       },
     );
@@ -76,22 +68,21 @@ class AuthenticationApi {
       required String requestToken}) async {
     final result = await _http.request(
       '/authentication/token/validate_with_login',
-      onSuccess: (responseBody) {
-        final json = Map<String, dynamic>.from(
-          jsonDecode(responseBody),
-        );
-        return json['request_token'] as String;
-      },
       method: HttpMethod.post,
       body: {
         'username': username,
         'password': password,
         'request_token': requestToken,
       },
+      onSuccess: (responseBody) {
+        final json = responseBody as Map;
+
+        return json['request_token'] as String;
+      },
     );
 
     return result.when(
-      (failure) => _handleFailure(failure),
+      _handleFailure,
       (newRequestToken) => Either.right(newRequestToken),
     );
 
@@ -144,16 +135,16 @@ class AuthenticationApi {
         'request_token': requestToken,
       },
       onSuccess: (responseBody) {
-        final json = Map<String, dynamic>.from(
-          jsonDecode(responseBody),
-        );
+        final json = responseBody as Map;
         return json['session_id'] as String;
       },
     );
 
     return result.when(
-      (failure) => _handleFailure(failure),
-      (sessionId) => Either.right(sessionId),
+      _handleFailure,
+      (sessionId) => Either.right(
+        sessionId,
+      ),
     );
 
     // try {

@@ -32,7 +32,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     String password,
   ) async {
     final requestTokenResult = await _authenticationApi.createRequestToken();
-
     return requestTokenResult.when(
       (failure) => Either.left(failure),
       (requestToken) async {
