@@ -1,4 +1,4 @@
-part of 'HttpManagement.dart';
+part of 'httpManagement.dart';
 
 class HttpFailure {
   HttpFailure({

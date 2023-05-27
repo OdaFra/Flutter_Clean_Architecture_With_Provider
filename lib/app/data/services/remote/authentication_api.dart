@@ -1,6 +1,6 @@
 import '../../../core/enums/enum.dart';
 import '../../../core/utils/utils.dart';
-import '../../http/HttpManagement.dart';
+import '../../http/httpManagement.dart';
 
 class AuthenticationApi {
   AuthenticationApi(this._http);

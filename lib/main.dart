@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'app/data/http/HttpManagement.dart';
+import 'app/data/http/httpManagement.dart';
 import 'app/data/repository_implementation/authentication_repository_impl.dart';
 import 'app/data/repository_implementation/connectivity_repository_impl.dart';
 import 'app/data/services/remote/authentication_api.dart';

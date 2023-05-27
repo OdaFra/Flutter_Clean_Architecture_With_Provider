@@ -1,4 +1,4 @@
-part of 'HttpManagement.dart';
+part of 'httpManagement.dart';
 
 _printLogs(
   Map<String, dynamic> logs,

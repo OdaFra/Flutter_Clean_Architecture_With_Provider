@@ -1,4 +1,4 @@
-part of 'HttpManagement.dart';
+part of 'httpManagement.dart';
 
 dynamic _parseResponseBody(String responseBody) {
   try {

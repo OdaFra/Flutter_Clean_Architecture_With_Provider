@@ -1,14 +1,14 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
+// ignore_for_file: file_names, unused_import
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import '../../core/utils/utils.dart';
-
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 part 'failure.dart';
-part 'parse_response_body.dart';
 part 'logs.dart';
+part 'parse_response_body.dart';
 
 enum HttpMethod { get, post, patch, delete, put }
 
@@ -106,23 +106,24 @@ class HttpManagement {
       }
 
       final statusCode = response.statusCode;
-      final responseBody = _parseResponseBody(
-        response.body,
-      );
-
-      print('Este es el status actual $statusCode');
-
+      print('El estadoa actual es $statusCode');
       if (statusCode >= 200 && statusCode < 300) {
         return Either.right(
-          onSuccess(responseBody),
+          onSuccess(response.body),
         );
       }
+
+      // final responseBody = _parseResponseBody(
+      //   response.body,
+      // );
+
+      print('Este es el status actual $statusCode');
 
       logs = {
         ...logs,
         'startTime': DateTime.now().toString(),
         'statusCode': statusCode,
-        'responseBody': responseBody
+        'responseBody': response.body
       };
 
       return Either.left(
