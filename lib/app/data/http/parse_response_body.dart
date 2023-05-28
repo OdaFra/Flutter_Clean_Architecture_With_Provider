@@ -1,6 +1,6 @@
-part of 'httpManagement.dart';
+import 'dart:convert';
 
-dynamic _parseResponseBody(String responseBody) {
+dynamic parseResponseBody(dynamic responseBody) {
   try {
     return jsonDecode(responseBody);
   } catch (_) {
