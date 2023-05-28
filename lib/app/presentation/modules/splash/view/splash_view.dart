@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../../main.dart';
+import '../../../../domain/repositories/repositories.dart';
 import '../../../router/router.dart';
 
 class Splash extends StatefulWidget {
@@ -20,15 +21,19 @@ class _SplashState extends State<Splash> {
   }
 
   Future<void> _init() async {
-    final injector = Injector.of(context);
-    final connectivityRepository = injector.connectivityRepository;
+    final ConnectivityRepository connectivityRepository =
+        Provider.of<ConnectivityRepository>(
+      context,
+      listen: false,
+    );
+    final authenticationRepository =
+        Provider.of<AuthenticationRepository>(context, listen: false);
     final hasInternet = await connectivityRepository.hastInternet;
 
     if (hasInternet) {
-      final authentication = injector.authenticationRepository;
-      final isSignedIn = await authentication.isSignedIn;
+      final isSignedIn = await authenticationRepository.isSignedIn;
       if (isSignedIn) {
-        final user = await authentication.getUserData();
+        final user = await authenticationRepository.getUserData();
         if (mounted) {
           if (user != null) {
             _goTo(Routes.home);
@@ -55,8 +60,8 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: SizedBox(
-            width: 80, height: 80, child: CircularProgressIndicator.adaptive()),
+        child:
+            SizedBox(width: 80, height: 80, child: CircularProgressIndicator()),
       ),
     );
   }
