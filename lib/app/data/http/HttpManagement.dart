@@ -1,14 +1,12 @@
-// ignore_for_file: file_names, unused_import
-
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
-import '../../core/utils/utils.dart';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-part 'failure.dart';
-part 'logs.dart';
-part 'parse_response_body.dart';
+
+import 'package:http/http.dart';
+
+import '../../core/utils/utils.dart';
+import 'failure.dart';
+import 'logs.dart';
+import 'parse_response_body.dart';
 
 enum HttpMethod { get, post, patch, delete, put }
 
@@ -27,16 +25,15 @@ class HttpManagement {
 
   Future<Either<HttpFailure, R>> request<R>(
     String path, {
-    required R Function(String responseBody) onSuccess,
+    required R Function(dynamic responseBody) onSuccess,
     HttpMethod method = HttpMethod.get,
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
     Map<String, dynamic> body = const {},
     bool useApiKey = true,
   }) async {
-    Map<String, dynamic> logs = const {};
+    Map<String, dynamic> logs = {};
     StackTrace? stackTrace;
-
     try {
       if (useApiKey) {
         queryParameters = {
@@ -99,32 +96,33 @@ class HttpManagement {
         case HttpMethod.put:
           response = await _client.put(
             url,
-            body: bodyString,
             headers: headers,
+            body: bodyString,
           );
           break;
       }
 
       final statusCode = response.statusCode;
-      print('El estadoa actual es $statusCode');
-      if (statusCode >= 200 && statusCode < 300) {
-        return Either.right(
-          onSuccess(response.body),
-        );
-      }
+      final responseBody = parseResponseBody(
+        response.body,
+      );
 
-      // final responseBody = _parseResponseBody(
-      //   response.body,
-      // );
-
-      print('Este es el status actual $statusCode');
+      print('Primer statusCode es $statusCode');
 
       logs = {
         ...logs,
         'startTime': DateTime.now().toString(),
         'statusCode': statusCode,
-        'responseBody': response.body
+        'responseBody': responseBody
       };
+
+      if (statusCode >= 200 && statusCode < 300) {
+        return Either.right(
+          onSuccess(responseBody),
+        );
+      }
+
+      print('===>Este es el status actual $statusCode');
 
       return Either.left(
         HttpFailure(statusCode: statusCode),
@@ -158,7 +156,7 @@ class HttpManagement {
         ...logs,
         'endTime': DateTime.now().toString(),
       };
-      // _printLogs(logs, stackTrace);
+      printLogs(logs, stackTrace);
     }
   }
 }
