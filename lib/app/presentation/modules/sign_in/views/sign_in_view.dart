@@ -93,12 +93,10 @@ class _SignInViewState extends State<SignInView> {
     setState(() {
       _fetching = true;
     });
-    final result =
-        await Provider.of<AuthenticationRepository>(context, listen: false)
-            .signIn(
-      _username,
-      _password,
-    );
+    final result = await context.read<AuthenticationRepository>().signIn(
+          _username,
+          _password,
+        );
     if (!mounted) {
       return;
     }
