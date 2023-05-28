@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../core/enums/enum.dart';
 import '../../../core/utils/utils.dart';
+import '../../http/failure.dart';
 import '../../http/httpManagement.dart';
 
 class AuthenticationApi {
@@ -7,36 +10,19 @@ class AuthenticationApi {
 
   final HttpManagement _http;
 
-  Either<SignInFailure, String> _handleFailure(HttpFailure failure) {
-    print('Code is ${failure.statusCode}');
-    if (failure.statusCode != null) {
-      switch (failure.statusCode!) {
-        case 401:
-          return Either.left(SignInFailure.unauthorized);
-        case 404:
-          return Either.left(SignInFailure.notFound);
-        default:
-          return Either.left(SignInFailure.unknown);
-      }
-    }
-    if (failure.exception is NetworKException) {
-      return Either.left(SignInFailure.network);
-    }
-    return Either.left(SignInFailure.unknown);
-  }
-
   //Para obtener el token
   Future<Either<SignInFailure, String>> createRequestToken() async {
     final result = await _http.request(
       '/authentication/token/new',
       onSuccess: (responseBody) {
+        print('===>Este es el responseBODY $responseBody');
         final json = responseBody as Map;
-        return json['request_token'] as String;
+        return json['request_token'];
       },
     );
 
     return result.when(
-      _handleFailure,
+      (failure) => _handleFailure(failure),
       (requestToken) => Either.right(requestToken),
     );
 
@@ -82,7 +68,7 @@ class AuthenticationApi {
     );
 
     return result.when(
-      _handleFailure,
+      (failure) => _handleFailure(failure),
       (newRequestToken) => Either.right(newRequestToken),
     );
 
@@ -141,7 +127,7 @@ class AuthenticationApi {
     );
 
     return result.when(
-      _handleFailure,
+      (failure) => _handleFailure(failure),
       (sessionId) => Either.right(
         sessionId,
       ),
@@ -171,5 +157,24 @@ class AuthenticationApi {
     //   }
     //   return Either.left(SignInFailure.unknown);
     // }
+  }
+
+  Either<SignInFailure, String> _handleFailure(HttpFailure failure) {
+    if (kDebugMode) {
+      print('==> El statusCode es ${failure.statusCode}');
+    }
+    if (failure.statusCode != null) {
+      switch (failure.statusCode) {
+        case 401:
+          return Either.left(SignInFailure.unauthorized);
+        case 404:
+          return Either.left(SignInFailure.notFound);
+        default:
+          return Either.left(SignInFailure.unknown);
+      }
+    } else if (failure.exception is NetworKException) {
+      return Either.left(SignInFailure.network);
+    }
+    return Either.left(SignInFailure.unknown);
   }
 }
