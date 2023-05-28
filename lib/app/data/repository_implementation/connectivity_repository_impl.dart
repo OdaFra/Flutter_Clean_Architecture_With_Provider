@@ -3,7 +3,11 @@ import '../../domain/repositories/repositories.dart';
 import '../services/remote/internet_checker.dart';
 
 class ConnectivityRepositoryImpl implements ConnectivityRepository {
-  ConnectivityRepositoryImpl(this._connectivity, this._internetChecker);
+  ConnectivityRepositoryImpl(
+      {required Connectivity connectivity,
+      required InternetChecker internetChecker})
+      : _connectivity = connectivity,
+        _internetChecker = internetChecker;
   final Connectivity _connectivity;
   final InternetChecker _internetChecker;
 
