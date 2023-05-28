@@ -18,8 +18,7 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 15),
             TextButton(
                 onPressed: () async {
-                  Provider.of<AuthenticationRepository>(context, listen: false)
-                      .signUout();
+                  context.read<AuthenticationRepository>().signOut();
                   Navigator.pushReplacementNamed(context, Routes.signIn);
                 },
                 child: const Text('Sign Out'))

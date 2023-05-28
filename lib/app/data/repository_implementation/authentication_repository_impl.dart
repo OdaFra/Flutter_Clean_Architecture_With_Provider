@@ -85,7 +85,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<void> signUout() {
+  Future<void> signOut() {
     return _secureStorage.delete(key: _key);
   }
 }
