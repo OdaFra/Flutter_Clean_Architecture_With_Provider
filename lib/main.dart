@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'app/data/http/httpManagement.dart';
+import 'app/data/repository_implementation/account_repository_impl.dart';
 import 'app/data/repository_implementation/authentication_repository_impl.dart';
 import 'app/data/repository_implementation/connectivity_repository_impl.dart';
 import 'app/data/services/remote/authentication_api.dart';
@@ -16,24 +17,31 @@ void main() async {
   await dotenv.load();
 
   runApp(
-    Provider<ConnectivityRepository>(
-      create: (context) => ConnectivityRepositoryImpl(
-        connectivity: Connectivity(),
-        internetChecker: InternetChecker(),
-      ),
-      child: Provider<AuthenticationRepository>(
-        create: (context) => AuthenticationRepositoryImpl(
-          const FlutterSecureStorage(),
-          AuthenticationApi(
-            HttpManagement(
-              client: http.Client(),
-              baseUrl: dotenv.env['BASE_URL']!,
-              apiKey: dotenv.env['TMDB_KEY']!,
-            ),
+    MultiProvider(
+      providers: [
+        Provider(
+          create: (context) => AccountRepositoryImpl(),
+        ),
+        Provider<ConnectivityRepository>(
+          create: (context) => ConnectivityRepositoryImpl(
+            connectivity: Connectivity(),
+            internetChecker: InternetChecker(),
           ),
         ),
-        child: const MyApp(),
-      ),
+        Provider<AuthenticationRepository>(
+          create: (context) => AuthenticationRepositoryImpl(
+            const FlutterSecureStorage(),
+            AuthenticationApi(
+              HttpManagement(
+                client: http.Client(),
+                baseUrl: dotenv.env['BASE_URL']!,
+                apiKey: dotenv.env['TMDB_KEY']!,
+              ),
+            ),
+          ),
+        )
+      ],
+      child: const MyApp(),
     ),
   );
 }
