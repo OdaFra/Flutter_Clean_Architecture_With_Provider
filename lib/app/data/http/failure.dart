@@ -1,5 +1,3 @@
-part of 'httpManagement.dart';
-
 class HttpFailure {
   HttpFailure({
     this.statusCode,
