@@ -107,8 +107,6 @@ class HttpManagement {
         response.body,
       );
 
-      print('Primer statusCode es $statusCode');
-
       logs = {
         ...logs,
         'startTime': DateTime.now().toString(),
@@ -121,8 +119,6 @@ class HttpManagement {
           onSuccess(responseBody),
         );
       }
-
-      print('===>Este es el status actual $statusCode');
 
       return Either.left(
         HttpFailure(statusCode: statusCode),

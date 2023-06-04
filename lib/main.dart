@@ -45,23 +45,3 @@ void main() async {
     ),
   );
 }
-
-// class Injector extends InheritedWidget {
-//   const Injector({
-//     super.key,
-//     required super.child,
-//     required this.authenticationRepository,
-//   });
-
-//   final AuthenticationRepository authenticationRepository;
-//   @override
-//   bool updateShouldNotify(_) {
-//     throw UnimplementedError();
-//   }
-
-//   static Injector of(BuildContext context) {
-//     final injector = context.dependOnInheritedWidgetOfExactType<Injector>();
-//     assert(injector != null, 'Injector could not be found');
-//     return injector!;
-//   }
-// }
