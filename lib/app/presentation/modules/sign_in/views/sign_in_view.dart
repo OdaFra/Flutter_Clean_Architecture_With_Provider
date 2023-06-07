@@ -5,15 +5,11 @@ import '../../../../core/enums/enum.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../router/router.dart';
 import '../controllers/signIn_controller.dart';
+import 'widgets/submit_button.dart';
 
-class SignInView extends StatefulWidget {
+class SignInView extends StatelessWidget {
   const SignInView({super.key});
 
-  @override
-  State<SignInView> createState() => _SignInViewState();
-}
-
-class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SigInController>(
@@ -62,19 +58,7 @@ class _SignInViewState extends State<SignInView> {
                               const InputDecoration(hintText: 'password'),
                         ),
                         const SizedBox(height: 20),
-                        if (controller.fetching)
-                          const CircularProgressIndicator()
-                        else
-                          MaterialButton(
-                            onPressed: () {
-                              final isValid = Form.of(context).validate();
-                              if (isValid) {
-                                _submit(context);
-                              }
-                            },
-                            color: Colors.indigo,
-                            child: const Text('Sign In'),
-                          )
+                        const SubmitButton()
                       ],
                     ),
                   );
@@ -84,43 +68,6 @@ class _SignInViewState extends State<SignInView> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _submit(BuildContext context) async {
-    final controller = context.read<SigInController>();
-
-    controller.onFetchingChanged(true);
-
-    final result = await context.read<AuthenticationRepository>().signIn(
-          controller.username,
-          controller.password,
-        );
-    if (!mounted) {
-      return;
-    }
-    result.when(
-      (failure) {
-        controller.onFetchingChanged(false);
-        final message = {
-          SignInFailure.notFound: 'Not Found',
-          SignInFailure.unauthorized: 'Invalid password',
-          SignInFailure.unknown: 'Internal error',
-          SignInFailure.network: 'Network error'
-        }[failure];
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message!),
-          ),
-        );
-      },
-      (user) {
-        Navigator.pushReplacementNamed(
-          context,
-          Routes.home,
-        );
-      },
     );
   }
 }
