@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/enums/enum.dart';
-import '../../../../domain/repositories/repositories.dart';
-import '../../../router/router.dart';
 import '../controllers/signIn_controller.dart';
 import 'widgets/submit_button.dart';
 
@@ -24,7 +21,7 @@ class SignInView extends StatelessWidget {
                   final controller =
                       Provider.of<SigInController>(context, listen: true);
                   return AbsorbPointer(
-                    absorbing: controller.fetching,
+                    absorbing: controller.state.fetching,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
