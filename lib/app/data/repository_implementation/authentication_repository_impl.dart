@@ -63,25 +63,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         );
       },
     );
-
-    /**
-   * Ejemplo para 
-   */
-    // print('🔥requestToken:::$requestToken');
-    // await Future.delayed(const Duration(seconds: 2));
-
-    // if (username != 'test') {
-    //   return Either.left(SignInFailure.notFound);
-    // }
-    // if (password != '123456') {
-    //   return Either.left(SignInFailure.unauthorized);
-    // }
-
-    // await _secureStorage.write(key: _key, value: '123');
-
-    // return Either.right(
-    //   User(),
-    // );
   }
 
   @override
