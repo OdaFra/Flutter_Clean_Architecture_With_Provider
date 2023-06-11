@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/signIn_controller.dart';
+import '../controllers/signIn_state.dart';
 import 'widgets/submit_button.dart';
 
 class SignInView extends StatelessWidget {
@@ -10,7 +11,7 @@ class SignInView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SigInController>(
-      create: (context) => SigInController(),
+      create: (context) => SigInController(const SignInState()),
       child: Scaffold(
         body: SafeArea(
           child: Center(
@@ -28,7 +29,6 @@ class SignInView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextFormField(
-                          
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           onChanged: (value) =>
                               controller.onUsernameChanged(value),
