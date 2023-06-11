@@ -1,7 +1,9 @@
 // ignore_for_file: file_names
 
-class SignInState {
-  SignInState({
+import 'package:equatable/equatable.dart';
+
+class SignInState extends Equatable {
+  const SignInState({
     this.username = '',
     this.password = '',
     this.fetching = false,
@@ -21,4 +23,11 @@ class SignInState {
       fetching: fetching ?? this.fetching,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        username,
+        password,
+        fetching,
+      ];
 }
