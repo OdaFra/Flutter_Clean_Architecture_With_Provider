@@ -18,14 +18,17 @@ class SignInView extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Form(
                 child: Builder(builder: (context) {
-                  final controller =
-                      Provider.of<SigInController>(context, listen: true);
+                  final controller = Provider.of<SigInController>(
+                    context,
+                    listen: true,
+                  );
                   return AbsorbPointer(
                     absorbing: controller.state.fetching,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextFormField(
+                          
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           onChanged: (value) =>
                               controller.onUsernameChanged(value),
