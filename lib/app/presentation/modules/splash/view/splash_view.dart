@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../router/router.dart';
 
@@ -23,12 +24,13 @@ class _SplashState extends State<Splash> {
   Future<void> _init() async {
     final connectivityRepository = context.read<ConnectivityRepository>();
     final authenticationRepository = context.read<AuthenticationRepository>();
+    final accountRepository = context.read<AccountRepository>();
     final hasInternet = await connectivityRepository.hastInternet;
 
     if (hasInternet) {
       final isSignedIn = await authenticationRepository.isSignedIn;
       if (isSignedIn) {
-        final user = await authenticationRepository.getUserData();
+        final user = await accountRepository.getUserData();
         if (mounted) {
           if (user != null) {
             _goTo(Routes.home);
