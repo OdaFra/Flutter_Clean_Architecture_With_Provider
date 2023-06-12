@@ -1,9 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import '../../../../core/enums/enum.dart';
+import '../../../../core/utils/utils.dart';
+import '../../../../domain/models/user.dart';
+import '../../../../domain/repositories/repositories.dart';
 import '../../../state_notifier.dart';
 import 'signIn_state.dart';
 
 class SigInController extends StateNotifier<SignInState> {
-  SigInController(super.state);
+  SigInController(
+    super.state, {
+    required this.authenticationRepository,
+  });
+
+  final AuthenticationRepository authenticationRepository;
 
   void onUsernameChanged(String text) {
     onlyUpdate(
@@ -21,7 +30,17 @@ class SigInController extends StateNotifier<SignInState> {
     );
   }
 
-  void onFetchingChanged(bool value) {
-    state = state.copyWith(fetching: value);
+  Future<Either<SignInFailure, User>> submit() async {
+    state = state.copyWith(fetching: true);
+    final result = await authenticationRepository.signIn(
+      state.username,
+      state.password,
+    );
+
+    result.when(
+      (_) => state = state.copyWith(fetching: false),
+      (_) => null,
+    );
+    return result;
   }
 }
