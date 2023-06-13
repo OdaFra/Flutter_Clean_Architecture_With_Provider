@@ -30,7 +30,7 @@ class SigInController extends StateNotifier<SignInState> {
     );
   }
 
-  Future<Either<SignInFailure, User>> submit() async {
+  Future<Either<SignInFailure, User?>> submit() async {
     state = state.copyWith(fetching: true);
     final result = await authenticationRepository.signIn(
       state.username,
