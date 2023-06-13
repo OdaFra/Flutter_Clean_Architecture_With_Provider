@@ -12,11 +12,9 @@ class AccountApi {
         'session_id': sessionId,
       },
       onSuccess: (responseBody) {
-        final json = responseBody as Map;
-        print(responseBody);
-        return User(
-          id: json['id'] as int,
-          username: json[' username'] as String,
+        final json = responseBody as Map<String, dynamic>;
+        return User.fromMap(
+          json
         );
       },
     );
