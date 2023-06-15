@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/repositories.dart';
+import '../../../global/controllers/session_controller.dart';
 import '../../../router/router.dart';
 
 class Splash extends StatefulWidget {
@@ -26,16 +27,19 @@ class _SplashState extends State<Splash> {
     final authenticationRepository = context.read<AuthenticationRepository>();
     final accountRepository = context.read<AccountRepository>();
     final hasInternet = await connectivityRepository.hastInternet;
+    final sessionController = context.read<SessionController>();
 
     if (hasInternet) {
       final isSignedIn = await authenticationRepository.isSignedIn;
       if (isSignedIn) {
         final user = await accountRepository.getUserData();
+
         if (mounted) {
           if (user != null) {
-            _goTo(Routes.home);
+            sessionController.setUser(user);
+            return _goTo(Routes.home);
           } else {
-            _goTo(Routes.signIn);
+            return _goTo(Routes.signIn);
           }
         }
       } else if (mounted) {
