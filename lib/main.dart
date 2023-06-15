@@ -15,6 +15,7 @@ import 'app/data/services/remote/internet_checker.dart';
 import 'app/domain/repositories/account_repository.dart';
 import 'app/domain/repositories/repositories.dart';
 import 'app/my_app.dart';
+import 'app/presentation/global/controllers/session_controller.dart';
 
 void main() async {
   await dotenv.load();
@@ -47,7 +48,10 @@ void main() async {
             sessionService,
             accountApi,
           ),
-        )
+        ),
+        ChangeNotifierProvider<SessionController>(
+          create: (_) => SessionController(),
+        ),
       ],
       child: const MyApp(),
     ),
