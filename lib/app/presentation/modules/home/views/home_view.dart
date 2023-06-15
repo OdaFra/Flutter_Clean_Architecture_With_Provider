@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/repositories/repositories.dart';
+import '../../../global/controllers/session_controller.dart';
 import '../../../presentation.dart';
 
 class HomeView extends StatelessWidget {
@@ -9,12 +10,15 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionController = context.read<SessionController>();
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Home'),
+            Text('${sessionController.state!.id}'),
+            Text(sessionController.state!.username ?? ''),
             const SizedBox(height: 15),
             TextButton(
                 onPressed: () async {
