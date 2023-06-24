@@ -1,7 +1,8 @@
 # Movie App with clean architecture
 ## 🎦 🎞️ 📽️ 🎬 🍿 👀
 
-En este proyecto se ira implementando todo lo relacionado con el codigo limpio como arquitectura limpia permitiendo utilizar el manejador de estado provider para las diferentes vista que se elaboraran durante el desarrollado de la app.
+Este proyecto tiene como finalidad construir una aplicación mobile implementando arquitectura limpia, el cual esta pensado para su posterior escalabilidad. 
+Para las vistas, actualizaciones e inserción de datos, se optó por la dependencia o paquete **Provider**, como manejador de estado  durante el proceso de desarrollo de la app.
 
 ### Para la ejecución o despligue ejecutar el siguiente comando:
 
@@ -9,7 +10,7 @@ En este proyecto se ira implementando todo lo relacionado con el codigo limpio c
 1 - Primero, obtenemos o actualizamos todas las dependencias.
 
 ```
-flutter pub run build_runner build
+flutter pub get
 ```
 2 - Segundo, nos ubicamos en el proyecto y ejecutamos en la terminal para disponer de los archivos de codigo generado (Json_serializable) 
 
