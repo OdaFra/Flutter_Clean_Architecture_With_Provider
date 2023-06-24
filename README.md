@@ -1,17 +1,11 @@
-# Movie App
-### clean_architecture_with_provider
+# Movie App with clean architecture
+## Themoviedb
 
 En este proyecto se ira implementando todo lo relacionado con el codigo limpio como arquitectura limpia permitiendo utilizar el manejador de estado provider para las diferentes vista que se elaboraran durante el desarrollado de la app.
 
-<!-- ## Getting Started
+### Para la ejecución o despligue ejecutar el siguiente comando:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference. -->
+Run
+```
+flutter pub run build_runner build
+```
