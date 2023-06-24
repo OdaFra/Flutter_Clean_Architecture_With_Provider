@@ -13,9 +13,7 @@ class AccountApi {
       },
       onSuccess: (responseBody) {
         final json = responseBody as Map<String, dynamic>;
-        return User.fromMap(
-          json
-        );
+        return User.fromJson(json);
       },
     );
     return result.when(
