@@ -50,7 +50,9 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider<SessionController>(
-          create: (_) => SessionController(),
+          create: (context) => SessionController(
+            authenticationRepository: context.read<AuthenticationRepository>(),
+          ),
         ),
       ],
       child: const MyApp(),
