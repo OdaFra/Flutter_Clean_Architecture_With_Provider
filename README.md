@@ -7,12 +7,12 @@ Para las vistas, actualizaciones e inserción de datos, se optó por la dependen
 ### Para la ejecución o despligue ejecutar el siguiente comando:
 
 
-1 - Primero, obtenemos o actualizamos todas las dependencias.
+##### 1 - Primero, obtenemos o actualizamos todas las dependencias.
 
 ```
 flutter pub get
 ```
-2 - Segundo, nos ubicamos en el proyecto y ejecutamos en la terminal para disponer de los archivos de codigo generado (Json_serializable) 
+##### 2 - Segundo, nos ubicamos en el proyecto y ejecutamos en la terminal para disponer de los archivos de codigo generado (Json_serializable) 
 
 ```
 flutter pub run build_runner build
