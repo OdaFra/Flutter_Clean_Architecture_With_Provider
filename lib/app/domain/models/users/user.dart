@@ -8,10 +8,13 @@ class User extends Equatable {
   const User({
     required this.id,
     required this.username,
+    required this.avatarPath,
   });
 
   final int id;
   final String username;
+  @JsonKey(name: 'avatar', fromJson: avatarPathFromJson)
+  final String? avatarPath;
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -22,4 +25,9 @@ class User extends Equatable {
         id,
         username,
       ];
+}
+
+String? avatarPathFromJson(Map<String, dynamic> json) {
+  json['tmdb']?['avatar_path'] as String?;
+  return null;
 }
