@@ -1,6 +1,6 @@
 import '../../core/utils/either.dart';
 import '../../core/enums/signInFailure.dart';
-import '../../domain/models/user.dart';
+import '../../domain/models/models.dart';
 import '../../domain/repositories/repositories.dart';
 import '../services/local/session_service.dart';
 import '../services/remote/account_api.dart';

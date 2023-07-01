@@ -1,4 +1,4 @@
-import '../../../domain/models/user.dart';
+import '../../../domain/models/models.dart';
 import '../../http/httpManagement.dart';
 
 class AccountApi {

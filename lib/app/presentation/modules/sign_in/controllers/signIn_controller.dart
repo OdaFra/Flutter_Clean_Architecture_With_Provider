@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import '../../../../core/enums/enum.dart';
 import '../../../../core/utils/utils.dart';
-import '../../../../domain/models/user.dart';
+import '../../../../domain/models/models.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../state_notifier.dart';
 import 'signIn_state.dart';
