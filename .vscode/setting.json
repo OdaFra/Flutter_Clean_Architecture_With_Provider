@@ -2,5 +2,10 @@
     "editor.codeActionsOnSave":{
         "source.fitAll": true,
         "source.organizeImports":true
+    },
+    "command-runner.commands":{
+        "pub get": "flutter pub get",
+        "build_runner":"flutter pub run build_runner build",
+        "build_runner delete-c":"flutter pub run build_runner build --delete-conflicting-outputs"
     }
 }
