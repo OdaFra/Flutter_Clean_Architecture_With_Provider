@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/repositories/repositories.dart';
 import '../controllers/signIn_controller.dart';
-import '../controllers/signIn_state.dart';
+import '../controllers/state/signIn_state.dart';
 import 'widgets/submit_button.dart';
 
 class SignInView extends StatelessWidget {

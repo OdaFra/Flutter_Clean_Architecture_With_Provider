@@ -4,7 +4,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../../domain/models/models.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../state_notifier.dart';
-import 'signIn_state.dart';
+import 'state/signIn_state.dart';
 
 class SigInController extends StateNotifier<SignInState> {
   SigInController(
