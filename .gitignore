@@ -13,6 +13,7 @@
 .pub-cache/
 .pub/
 *.g.dart
+*.freezed.dart
 build/
 coverage/
 lib/generated_plugin_registrant.dart
