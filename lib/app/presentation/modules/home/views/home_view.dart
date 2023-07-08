@@ -17,14 +17,19 @@ class _HomeViewState extends State<HomeView> {
     final SessionController sessionController =
         Provider.of(context); //context.read<SessionController>();
     final user = sessionController.state!;
+
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (user.avatarPath != null)
+              Image.network(
+                  'https://image.tmdb.org/t/p/w500${user.avatarPath}'),
+            const SizedBox(height: 15),
             const Text('Home'),
             Text('${user.id}'),
-            Text(user.username ?? ''),
+            Text(user.username),
             const SizedBox(height: 15),
             TextButton(
                 onPressed: () async {
