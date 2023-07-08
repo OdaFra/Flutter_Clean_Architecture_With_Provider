@@ -5,3 +5,7 @@ targets:
         generate_for:
           include:
             - lib/app/domain/models/**/*
+      freezed:
+        generate_for:
+          include:
+            - lib/app/presentation/**/**_state.dart
