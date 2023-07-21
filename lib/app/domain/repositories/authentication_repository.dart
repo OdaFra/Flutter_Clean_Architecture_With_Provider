@@ -1,5 +1,6 @@
-import '../../core/enums/enum.dart';
+
 import '../../core/utils/utils.dart';
+import '../failures/sign_in_failure.dart';
 import '../models/models.dart';
 
 abstract class AuthenticationRepository {
