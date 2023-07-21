@@ -9,3 +9,4 @@ targets:
         generate_for:
           include:
             - lib/app/presentation/**/**_state.dart
+            - lib/app/domain/models/**/*
