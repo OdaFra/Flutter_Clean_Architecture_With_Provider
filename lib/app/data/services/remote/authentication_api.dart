@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/foundation.dart';
 
-import '../../../core/enums/enum.dart';
 import '../../../core/utils/utils.dart';
+import '../../../domain/failures/sign_in_failure.dart';
 import '../../http/failure.dart';
 import '../../http/httpManagement.dart';
 
@@ -166,15 +168,15 @@ class AuthenticationApi {
     if (failure.statusCode != null) {
       switch (failure.statusCode) {
         case 401:
-          return Either.left(SignInFailure.unauthorized);
+          return Either.left(Unauthorized());
         case 404:
-          return Either.left(SignInFailure.notFound);
+          return Either.left(NotFound());
         default:
-          return Either.left(SignInFailure.unknown);
+          return Either.left(Unkonwn());
       }
     } else if (failure.exception is NetworKException) {
-      return Either.left(SignInFailure.network);
+      return Either.left(Network());
     }
-    return Either.left(SignInFailure.unknown);
+    return Either.left(Unkonwn());
   }
 }
