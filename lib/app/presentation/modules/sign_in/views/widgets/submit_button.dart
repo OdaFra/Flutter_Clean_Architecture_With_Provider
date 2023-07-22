@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../domain/failures/sign_in_failure.dart';
 import '../../../../global/controllers/session_controller.dart';
 import '../../../../router/router.dart';
 import '../../controllers/signIn_controller.dart';
@@ -38,18 +37,12 @@ class SubmitButton extends StatelessWidget {
     }
     result.when(
       (failure) {
-        final message = () {
-          if (failure is Network) {
-            return 'Network error';
-          }
-          if (failure is NotFound) {
-            return 'Not Found';
-          }
-          if (failure is Unauthorized) {
-            return 'Invalid password';
-          }
-          return 'Error';
-        }();
+       final message= failure.when(
+          notFound: () => 'Not Found',
+          network: () => 'Network error',
+          unauthorized: () => 'Invalid password',
+          unkonwn: () => 'Internal error',
+        );
         // final message = {
         //   SignInFailure.notFound: 'Not Found',
         //   SignInFailure.unauthorized: 'Invalid password',
