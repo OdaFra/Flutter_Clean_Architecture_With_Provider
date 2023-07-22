@@ -29,8 +29,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   ) async {
     final requestTokenResult = await _authenticationApi.createRequestToken();
     return requestTokenResult.when(
-      (failure) => Either.left(failure),
-      (requestToken) async {
+      left: (failure) => Either.left(failure),
+      right: (requestToken) async {
         final loginResult = await _authenticationApi.createSessionWithLogin(
           username: username,
           password: password,
@@ -38,14 +38,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         );
 
         return loginResult.when(
-          (failure) async => Either.left(failure),
-          (newRequestToken) async {
+          left: (failure) async => Either.left(failure),
+          right: (newRequestToken) async {
             final sessionResult = await _authenticationApi.createSession(
               newRequestToken,
             );
             return sessionResult.when(
-              (failure) async => Either.left(failure),
-              (sessionId) async {
+              left: (failure) async => Either.left(failure),
+              right: (sessionId) async {
                 await _sessionService.saveSessionId(sessionId);
                 final user = await _accountApi.getAccount(sessionId);
                 if (user == null) {

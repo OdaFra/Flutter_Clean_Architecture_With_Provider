@@ -24,8 +24,8 @@ class AuthenticationApi {
     );
 
     return result.when(
-      (failure) => _handleFailure(failure),
-      (requestToken) => Either.right(requestToken),
+      left: (failure) => _handleFailure(failure),
+      right: (requestToken) => Either.right(requestToken),
     );
 
     // Codigo de ejemplo anterior para obtener el Request Token
@@ -70,8 +70,8 @@ class AuthenticationApi {
     );
 
     return result.when(
-      (failure) => _handleFailure(failure),
-      (newRequestToken) => Either.right(newRequestToken),
+      left: (failure) => _handleFailure(failure),
+      right: (newRequestToken) => Either.right(newRequestToken),
     );
 
     // try {
@@ -129,8 +129,8 @@ class AuthenticationApi {
     );
 
     return result.when(
-      (failure) => _handleFailure(failure),
-      (sessionId) => Either.right(
+      left: (failure) => _handleFailure(failure),
+      right: (sessionId) => Either.right(
         sessionId,
       ),
     );

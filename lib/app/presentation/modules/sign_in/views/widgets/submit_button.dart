@@ -36,8 +36,8 @@ class SubmitButton extends StatelessWidget {
       return;
     }
     result.when(
-      (failure) {
-       final message= failure.when(
+      left: (failure) {
+        final message = failure.when(
           notFound: () => 'Not Found',
           network: () => 'Network error',
           unauthorized: () => 'Invalid password',
@@ -56,7 +56,7 @@ class SubmitButton extends StatelessWidget {
           ),
         );
       },
-      (user) {
+      right: (user) {
         final sessionController = context.read<SessionController>();
         sessionController.setUser(user!);
         Navigator.pushReplacementNamed(
