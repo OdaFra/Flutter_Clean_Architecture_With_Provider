@@ -10,3 +10,4 @@ targets:
           include:
             - lib/app/presentation/**/**_state.dart
             - lib/app/domain/models/**/*
+            - lib/app/domain/failures/**/*
