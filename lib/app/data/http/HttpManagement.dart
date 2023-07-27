@@ -116,12 +116,17 @@ class HttpManagement {
 
       if (statusCode >= 200 && statusCode < 300) {
         return Either.right(
-          onSuccess(responseBody),
+          onSuccess(
+            responseBody,
+          ),
         );
       }
 
       return Either.left(
-        HttpFailure(statusCode: statusCode),
+        HttpFailure(
+          statusCode: statusCode,
+          data: responseBody,
+        ),
       );
     } catch (e, s) {
       stackTrace = s;
