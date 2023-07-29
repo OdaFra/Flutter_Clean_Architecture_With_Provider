@@ -2,18 +2,18 @@ import '../../../core/enums/enum.dart';
 import '../../../core/utils/utils.dart';
 import '../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../domain/models/media/media.dart';
-import '../../http/HttpManagement.dart';
+import '../../http/http.dart';
 import '../utils/handle_failure.dart';
 
-class TrendingApi {
-  final HttpManagement _http;
+class TrendingAPI {
+  final HttpManagement _httpManagement;
 
-  TrendingApi(this._http);
+  TrendingAPI(this._httpManagement);
 
   Future<Either<HttpRequestFailure, List<Media>>> getMoviesAndSeries(
       TimeWindow timeWindow) async {
-    final result = await _http.request('/trending/all/${timeWindow.name}',
-        onSuccess: (json) {
+    final result = await _httpManagement
+        .request('/trending/all/${timeWindow.name}', onSuccess: (json) {
       final mediaList = json['result'] as List<Json>;
 
       return mediaList
