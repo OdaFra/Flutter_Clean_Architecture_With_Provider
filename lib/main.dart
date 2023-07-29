@@ -8,11 +8,12 @@ import 'app/data/http/httpManagement.dart';
 import 'app/data/repository_implementation/account_repository_impl.dart';
 import 'app/data/repository_implementation/authentication_repository_impl.dart';
 import 'app/data/repository_implementation/connectivity_repository_impl.dart';
+import 'app/data/repository_implementation/trending_repository_impl.dart';
 import 'app/data/services/local/session_service.dart';
 import 'app/data/services/remote/account_api.dart';
 import 'app/data/services/remote/authentication_api.dart';
 import 'app/data/services/remote/internet_checker.dart';
-import 'app/domain/repositories/account_repository.dart';
+import 'app/data/services/remote/trending_api.dart';
 import 'app/domain/repositories/repositories.dart';
 import 'app/my_app.dart';
 import 'app/presentation/global/controllers/session_controller.dart';
@@ -29,6 +30,7 @@ void main() async {
     apiKey: dotenv.env['TMDB_KEY']!,
   );
   final accountApi = AccountApi(http);
+
   runApp(
     MultiProvider(
       providers: [
@@ -47,6 +49,11 @@ void main() async {
             AuthenticationApi(http),
             sessionService,
             accountApi,
+          ),
+        ),
+        Provider<TrendingRepository>(
+          create: (_) => TrendingRepositoryImpl(
+            TrendingAPI(http),
           ),
         ),
         ChangeNotifierProvider<SessionController>(
