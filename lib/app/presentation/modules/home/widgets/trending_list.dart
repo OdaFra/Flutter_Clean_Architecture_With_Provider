@@ -9,19 +9,30 @@ import '../../../../domain/repositories/repositories.dart';
 
 typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
 
-class TrendingList extends StatelessWidget {
+class TrendingList extends StatefulWidget {
   const TrendingList({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<TrendingList> createState() => _TrendingListState();
+}
+
+class _TrendingListState extends State<TrendingList> {
+  late final Future<EitherListMedia> _future;
+
+  @override
+  void initState() {
     final repository = context.read<TrendingRepository>();
+    _future = repository.getMoviesAndSeries(TimeWindow.day);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 250,
       child: Center(
         child: FutureBuilder<EitherListMedia>(
-          future: repository.getMoviesAndSeries(
-            TimeWindow.day,
-          ),
+          future: _future,
           builder: (_, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
