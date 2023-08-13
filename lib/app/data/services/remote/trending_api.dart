@@ -14,15 +14,12 @@ class TrendingAPI {
       TimeWindow timeWindow) async {
     final result = await _httpManagement
         .request('/trending/all/${timeWindow.name}', onSuccess: (json) {
-      final mediaList = json['result'] as List<Json>;
+      final mediaList = List.from(json['results']);
 
       return mediaList
           .where(
-            (type) => type['media_type'] != 'person',
-          )
-          .map((e) => Media.fromJson(
-                e,
-              ))
+              (type) => type['media_type'] != 'person' && type['title'] != null)
+          .map((e) => Media.fromJson(e))
           .toList();
     });
     return result.when(
