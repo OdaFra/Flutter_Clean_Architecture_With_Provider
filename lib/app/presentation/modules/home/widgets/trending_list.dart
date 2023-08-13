@@ -6,6 +6,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../../domain/models/media/media.dart';
 import '../../../../domain/repositories/repositories.dart';
+import '../../../global/global.dart';
 
 typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
 
@@ -38,11 +39,25 @@ class _TrendingListState extends State<TrendingList> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+            } else if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            if (snapshot.hasError) {
-              return const Text('Error');
-            }
-            return Text(snapshot.data?.toString() ?? 'Empty data');
+            return snapshot.data!.when(
+                left: (failure) => Text(
+                      failure.toString(),
+                    ),
+                right: (list) {
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_, index) {
+                        final media = list[index];
+                        return Image.network(
+                          getImageUrl(media.posterPath),
+                        );
+                      });
+                });
           },
         ),
       ),
