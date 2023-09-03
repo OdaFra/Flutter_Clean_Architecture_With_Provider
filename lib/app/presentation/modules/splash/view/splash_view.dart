@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/session_controller.dart';
 import '../../../router/router.dart';
