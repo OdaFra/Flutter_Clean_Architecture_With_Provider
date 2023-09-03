@@ -6,7 +6,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../../domain/models/media/media.dart';
 import '../../../../domain/repositories/repositories.dart';
-import '../../../global/global.dart';
+import 'widgets.dart';
 
 typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
 
@@ -29,37 +29,65 @@ class _TrendingListState extends State<TrendingList> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: Center(
-        child: FutureBuilder<EitherListMedia>(
-          future: _future,
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return snapshot.data!.when(
-                left: (failure) => Text(
-                      failure.toString(),
-                    ),
-                right: (list) {
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_, index) {
-                        final media = list[index];
-                        return Image.network(
-                          getImageUrl(media.posterPath),
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Text(
+              'TRENDING',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10),
+          AspectRatio(
+              aspectRatio: 16 / 8,
+              child: LayoutBuilder(builder: (_, contrains) {
+                final width = contrains.maxHeight * 0.65;
+                return Center(
+                  child: FutureBuilder<EitherListMedia>(
+                    future: _future,
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      });
-                });
-          },
-        ),
+                      } else if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return snapshot.data!.when(
+                          left: (failure) => Text(
+                                failure.toString(),
+                              ),
+                          right: (list) {
+                            return ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              itemCount: list.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (_, index) {
+                                final media = list[index];
+                                return SizedBox(
+                                    width: width,
+                                    height: double.infinity,
+                                    child: TrendingTitle(
+                                      media: media,
+                                      width: width,
+                                    ));
+                              },
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 5.5),
+                            );
+                          });
+                    },
+                  ),
+                );
+              })),
+        ],
       ),
     );
   }
