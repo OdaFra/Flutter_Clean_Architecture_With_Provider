@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +20,16 @@ class TrendingList extends StatefulWidget {
 }
 
 class _TrendingListState extends State<TrendingList> {
-  late final Future<EitherListMedia> _future;
+  TrendingRepository get _repository => context.read();
+
+  late Future<EitherListMedia> _future;
+
+  TimeWindow _timeWindow = TimeWindow.day;
 
   @override
   void initState() {
-    final repository = context.read<TrendingRepository>();
-    _future = repository.getMoviesAndSeries(TimeWindow.day);
+    //final repository = context.read<TrendingRepository>();
+    _future = _repository.getMoviesAndSeries(_timeWindow);
     super.initState();
   }
 
@@ -33,11 +39,38 @@ class _TrendingListState extends State<TrendingList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Text(
-              'TRENDING',
-              style: TextStyle(fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                const Text(
+                  'TRENDING',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                DropdownButton<TimeWindow>(
+                    value: _timeWindow,
+                    items: const [
+                      DropdownMenuItem(
+                        value: TimeWindow.day,
+                        child: Text('Last 24h'),
+                      ),
+                      DropdownMenuItem(
+                        value: TimeWindow.week,
+                        child: Text('Last week'),
+                      )
+                    ],
+                    onChanged: (timeWindow) {
+                      if (timeWindow != null) {
+                        setState(() {
+                          _timeWindow = timeWindow;
+                          _future = _repository.getMoviesAndSeries(
+                            _timeWindow,
+                          );
+                        });
+                      } else {}
+                    })
+              ],
             ),
           ),
           const SizedBox(height: 10),
@@ -47,6 +80,7 @@ class _TrendingListState extends State<TrendingList> {
                 final width = contrains.maxHeight * 0.65;
                 return Center(
                   child: FutureBuilder<EitherListMedia>(
+                    key: ValueKey(_future),
                     future: _future,
                     builder: (_, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
