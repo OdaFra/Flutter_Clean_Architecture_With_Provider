@@ -26,10 +26,11 @@ class TrendingTitle extends StatelessWidget {
                 top: 5,
                 right: 5,
                 child: Chip(
-                  backgroundColor: Colors.grey.shade400,
+                  backgroundColor: Colors.grey.shade100,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   label: Text(
                     media.voteAverage.toStringAsFixed(1),
+                    style: TextStyle(color: Colors.blueGrey.shade600),
                   ),
                 ))
           ],
