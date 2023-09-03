@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: file_names
 
 import '../../../../core/utils/utils.dart';
 import '../../../../domain/failures/sign_in_failure/sign_in_failure.dart';
