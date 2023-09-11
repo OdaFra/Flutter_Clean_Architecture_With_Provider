@@ -8,6 +8,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../../domain/models/media/media.dart';
 import '../../../../domain/repositories/repositories.dart';
+import 'trending_time_window.dart';
 import 'widgets.dart';
 
 typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
@@ -39,40 +40,16 @@ class _TrendingListState extends State<TrendingList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Row(
-              children: [
-                const Text(
-                  'TRENDING',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Spacer(),
-                DropdownButton<TimeWindow>(
-                    value: _timeWindow,
-                    items: const [
-                      DropdownMenuItem(
-                        value: TimeWindow.day,
-                        child: Text('Last 24h'),
-                      ),
-                      DropdownMenuItem(
-                        value: TimeWindow.week,
-                        child: Text('Last week'),
-                      )
-                    ],
-                    onChanged: (timeWindow) {
-                      if (timeWindow != null) {
-                        setState(() {
-                          _timeWindow = timeWindow;
-                          _future = _repository.getMoviesAndSeries(
-                            _timeWindow,
-                          );
-                        });
-                      } else {}
-                    })
-              ],
-            ),
-          ),
+          TrendingTimeWindow(
+              timeWindow: _timeWindow,
+              onChanged: (timeWindow) {
+                setState(() {
+                  timeWindow = timeWindow;
+                  _future = _repository.getMoviesAndSeries(
+                    _timeWindow,
+                  );
+                });
+              }),
           const SizedBox(height: 10),
           AspectRatio(
               aspectRatio: 16 / 8,
