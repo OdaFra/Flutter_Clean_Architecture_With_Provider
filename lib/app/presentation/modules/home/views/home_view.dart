@@ -24,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 10),
             TrendingList()
 
             // if (user.avatarPath != null)
