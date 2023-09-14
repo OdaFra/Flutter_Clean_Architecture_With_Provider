@@ -25,14 +25,33 @@ class TrendingTitle extends StatelessWidget {
             Positioned(
                 top: 5,
                 right: 5,
-                child: Chip(
-                  backgroundColor: Colors.grey.shade100,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  label: Text(
-                    media.voteAverage.toStringAsFixed(1),
-                    style: TextStyle(color: Colors.blueGrey.shade600),
+                child: Opacity(
+                  opacity: 0.7,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Chip(
+                        backgroundColor: Colors.grey.shade100,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        label: Text(
+                          media.voteAverage.toStringAsFixed(1),
+                          style: TextStyle(color: Colors.blueGrey.shade600),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Chip(
+                        backgroundColor: Colors.grey.shade100,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        label: Icon(
+                          media.type == MediaType.movie
+                              ? Icons.movie
+                              : Icons.tv,
+                          size: 10,
+                        ),
+                      ),
+                    ],
                   ),
-                ))
+                )),
           ],
         ),
       ),
