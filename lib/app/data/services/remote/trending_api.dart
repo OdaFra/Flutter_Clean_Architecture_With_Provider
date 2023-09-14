@@ -18,7 +18,12 @@ class TrendingAPI {
 
       return mediaList
           .where(
-              (type) => type['media_type'] != 'person' && type['title'] != null)
+            (type) =>
+                type['media_type'] != 'person' &&
+                type['title'] != null &&
+                type['poster_path'] != null &&
+                type['backdrop_path'] != null,
+          )
           .map((e) => Media.fromJson(e))
           .toList();
     });
