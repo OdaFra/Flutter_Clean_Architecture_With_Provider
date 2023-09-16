@@ -14,8 +14,11 @@ class Performer with _$Performer {
     required double popularity,
     @JsonKey(name: 'original_name') required String originalName,
     @JsonKey(name: 'profile_path') required String profilePath,
-    @JsonKey(name: 'know_for', fromJson: getMediaList)
-    required List<Media> knowFor,
+    @JsonKey(
+      name: 'known_for',
+      fromJson: getMediaList,
+    )
+    required List<Media> knownFor,
   }) = _Performer;
 
   factory Performer.fromJson(Json json) => _$PerformerFromJson(json);
