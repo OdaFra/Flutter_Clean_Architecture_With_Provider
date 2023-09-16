@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../global/controllers/session_controller.dart';
+import '../widgets/trending_performers.dart';
 import '../widgets/widgets.dart';
 
 class HomeView extends StatefulWidget {
@@ -25,7 +26,9 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             SizedBox(height: 10),
-            TrendingList()
+            TrendingList(),
+            SizedBox(height: 20),
+            TrendingPerformers()
 
             // if (user.avatarPath != null)
             //   Image.network(
