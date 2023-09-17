@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/media/media.dart';
@@ -17,9 +18,17 @@ class TrendingTitle extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.network(
+              child: ExtendedImage.network(
                 getImageUrl(media.posterPath),
                 fit: BoxFit.cover,
+                loadStateChanged: (state) {
+                  if (state.extendedImageLoadState == LoadState.loading) {
+                    return Container(
+                      color: Colors.black12,
+                    );
+                  }
+                  return state.completedWidget;
+                },
               ),
             ),
             Positioned(
@@ -35,7 +44,8 @@ class TrendingTitle extends StatelessWidget {
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         label: Text(
                           media.voteAverage.toStringAsFixed(1),
-                          style: TextStyle(color: Colors.blueGrey.shade600),
+                          style: TextStyle(
+                              color: Colors.blueGrey.shade600, fontSize: 12),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -46,7 +56,7 @@ class TrendingTitle extends StatelessWidget {
                           media.type == MediaType.movie
                               ? Icons.movie
                               : Icons.tv,
-                          size: 10,
+                          size: 15,
                         ),
                       ),
                     ],
