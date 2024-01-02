@@ -19,6 +19,7 @@ class TrendingTitle extends StatelessWidget {
           children: [
             Positioned.fill(
               child: ExtendedImage.network(
+                
                 getImageUrl(media.posterPath),
                 fit: BoxFit.cover,
                 loadStateChanged: (state) {
