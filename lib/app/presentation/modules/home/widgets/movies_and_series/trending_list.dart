@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/enums/enum.dart';
-import '../../../../core/utils/utils.dart';
-import '../../../../domain/failures/http_request/http_request_failure.dart';
-import '../../../../domain/models/media/media.dart';
-import '../../../../domain/repositories/repositories.dart';
+import '../../../../../core/enums/enum.dart';
+import '../../../../../core/utils/utils.dart';
+import '../../../../../domain/failures/http_request/http_request_failure.dart';
+import '../../../../../domain/models/media/media.dart';
+import '../../../../../domain/repositories/repositories.dart';
 import 'trending_time_window.dart';
-import 'widgets.dart';
+import '../widgets.dart';
 
 typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
 

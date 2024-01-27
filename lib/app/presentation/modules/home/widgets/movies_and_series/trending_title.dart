@@ -1,8 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../domain/models/media/media.dart';
-import '../../../global/global.dart';
+import '../../../../../domain/models/media/media.dart';
+import '../../../../global/global.dart';
 
 class TrendingTitle extends StatelessWidget {
   const TrendingTitle({super.key, required this.media, required this.width});
