@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../domain/models/peformer/performer.dart';
 import '../../../../global/global.dart';
+import '../widgets.dart';
 
 class PerformersTitle extends StatelessWidget {
   const PerformersTitle({super.key, required this.performer});
@@ -31,7 +32,7 @@ class PerformersTitle extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8).copyWith(bottom: 35),
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -41,6 +42,8 @@ class PerformersTitle extends StatelessWidget {
                         Colors.grey.shade600,
                       ])),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         performer.name,
@@ -49,7 +52,24 @@ class PerformersTitle extends StatelessWidget {
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 10),
+                      if (performer.knownFor.isNotEmpty)
+                        SizedBox(
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: performer.knownFor
+                                  .take(3)
+                                  .map(
+                                    (media) => TrendingTitle(
+                                      showData: false,
+                                      media: media,
+                                      width: 100 * 0.70,
+                                    ),
+                                  )
+                                  .toList(),
+                            ))
                     ],
                   ),
                 ))
