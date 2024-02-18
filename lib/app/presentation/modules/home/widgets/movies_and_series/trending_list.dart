@@ -8,6 +8,7 @@ import '../../../../../core/utils/utils.dart';
 import '../../../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../../../domain/models/media/media.dart';
 import '../../../../../domain/repositories/repositories.dart';
+import '../../../../global/widgets/request_failed.dart';
 import 'trending_time_window.dart';
 import '../widgets.dart';
 
@@ -34,22 +35,22 @@ class _TrendingListState extends State<TrendingList> {
     super.initState();
   }
 
+  void _updateFuture(TimeWindow timeWindow) {
+    setState(() {
+      _timeWindow = timeWindow;
+      _future = _repository.getMoviesAndSeries(
+        _timeWindow,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TrendingTimeWindow(
-              timeWindow: _timeWindow,
-              onChanged: (timeWindow) {
-                setState(() {
-                  timeWindow = timeWindow;
-                  _future = _repository.getMoviesAndSeries(
-                    _timeWindow,
-                  );
-                });
-              }),
+          TrendingTimeWindow(timeWindow: _timeWindow, onChanged: _updateFuture),
           const SizedBox(height: 10),
           AspectRatio(
               aspectRatio: 16 / 8,
@@ -70,9 +71,11 @@ class _TrendingListState extends State<TrendingList> {
                         );
                       }
                       return snapshot.data!.when(
-                          left: (failure) => Text(
-                                failure.toString(),
-                              ),
+                          left: (failure) => RequestFailed(
+                              onRetry: () => _updateFuture(_timeWindow)),
+                          //  Text(
+                          //       failure.toString(),
+                          //     ),
                           right: (list) {
                             return ListView.separated(
                               padding: const EdgeInsets.symmetric(
