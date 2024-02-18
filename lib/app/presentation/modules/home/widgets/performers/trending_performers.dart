@@ -24,7 +24,8 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
 
   @override
   void initState() {
-    _pagecontroller = PageController(viewportFraction: 0.80, initialPage: 1);
+    _pagecontroller = PageController();
+    //viewportFraction: 0.80, initialPage: 1);
     // _pagecontroller.addListener(() {
     //   setState(() {
     //     _currentCard = _pagecontroller.page!.toInt();
@@ -53,26 +54,41 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
             }
             return snapshot.data!.when(
                 left: (_) => const Text('Error'),
-                right: (list) => Column(
+                right: (list) => Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
-                        Expanded(
-                          child: PageView.builder(
-                              controller: _pagecontroller,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: list.length,
-                              itemBuilder: (context, index) {
-                                final performer = list[index];
-                                return PerformersTitle(performer: performer);
+                        PageView.builder(
+                            controller: _pagecontroller,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: list.length,
+                            itemBuilder: (context, index) {
+                              final performer = list[index];
+                              return PerformersTitle(performer: performer);
+                            }),
+                        // Text('${_currentCard + 1}/${list.length}'),
+                        Positioned(
+                          bottom: 20,
+                          child: AnimatedBuilder(
+                              animation: _pagecontroller,
+                              builder: (_, __) {
+                                final currentCard =
+                                    _pagecontroller.page?.toInt() ?? 0;
+                                return Row(
+                                  children: List.generate(
+                                    list.length,
+                                    (index) => Icon(
+                                      Icons.circle,
+                                      size: 14,
+                                      color: currentCard == index
+                                          ? Colors.white
+                                          : Colors.white30,
+                                    ),
+                                  ),
+                                );
+                                // Text(
+                                //     '${currentCard + 1}/${list.length}');
                               }),
                         ),
-                        // Text('${_currentCard + 1}/${list.length}'),
-                        AnimatedBuilder(
-                            animation: _pagecontroller,
-                            builder: (_, __) {
-                              final currentCard =
-                                  _pagecontroller.page?.toInt() ?? 1;
-                              return Text('${currentCard + 1}/${list.length}');
-                            }),
                         const SizedBox(height: 10)
                       ],
                     ));
