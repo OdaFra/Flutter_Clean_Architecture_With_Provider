@@ -54,7 +54,7 @@ class _TrendingListState extends State<TrendingList> {
           AspectRatio(
               aspectRatio: 16 / 8,
               child: LayoutBuilder(builder: (_, contrains) {
-                final width = contrains.maxHeight * 0.65;
+                final width = contrains.maxHeight * 0.70;
                 return Center(
                   child: FutureBuilder<EitherListMedia>(
                     key: ValueKey(_future),
@@ -76,7 +76,7 @@ class _TrendingListState extends State<TrendingList> {
                           right: (list) {
                             return ListView.separated(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
+                                horizontal: 8,
                               ),
                               itemCount: list.length,
                               scrollDirection: Axis.horizontal,
@@ -91,7 +91,7 @@ class _TrendingListState extends State<TrendingList> {
                                     ));
                               },
                               separatorBuilder: (_, __) =>
-                                  const SizedBox(width: 5.5),
+                                  const SizedBox(width: 6),
                             );
                           });
                     },
