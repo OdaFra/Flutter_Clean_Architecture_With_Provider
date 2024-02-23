@@ -22,28 +22,32 @@ class TrendingTimeWindow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: Material(
-              color: const Color(0xfff0f0f0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: DropdownButton<TimeWindow>(
-                    underline: const SizedBox(),
-                    value: timeWindow,
-                    isDense: true,
-                    items: const [
-                      DropdownMenuItem(
-                        value: TimeWindow.day,
-                        child: Text('Last 24h'),
-                      ),
-                      DropdownMenuItem(
-                        value: TimeWindow.week,
-                        child: Text('Last week'),
-                      )
-                    ],
-                    onChanged: (mTimeWindow) {
-                      if (mTimeWindow != null && timeWindow != mTimeWindow) {
-                        onChanged(mTimeWindow);
-                      }
-                    }),
+              color: Colors.grey.shade300, // const Color(0xfff0f0f0),
+              child: DropdownButtonHideUnderline(
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButton<TimeWindow>(
+                      borderRadius: BorderRadius.circular(20),
+                      dropdownColor: Colors.grey.shade200,
+                      underline: const SizedBox(),
+                      value: timeWindow,
+                      isDense: true,
+                      items: const [
+                        DropdownMenuItem(
+                          value: TimeWindow.day,
+                          child: Text('Last 24h'),
+                        ),
+                        DropdownMenuItem(
+                          value: TimeWindow.week,
+                          child: Text('Last week'),
+                        )
+                      ],
+                      onChanged: (mTimeWindow) {
+                        if (mTimeWindow != null && timeWindow != mTimeWindow) {
+                          onChanged(mTimeWindow);
+                        }
+                      }),
+                ),
               ),
             ),
           ),
