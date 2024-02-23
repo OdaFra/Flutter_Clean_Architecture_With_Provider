@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
           children: [
             SizedBox(height: 10),
             TrendingList(),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             TrendingPerformers(),
             SizedBox(height: 20)
 
