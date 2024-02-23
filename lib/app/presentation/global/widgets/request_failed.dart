@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../generated/assets.gen.dart';
+
 class RequestFailed extends StatelessWidget {
   const RequestFailed({super.key, required this.onRetry, this.text});
   final VoidCallback onRetry;
@@ -12,6 +14,7 @@ class RequestFailed extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset(Assets.images.error404),
           Text(text ?? 'Request Failed'),
           MaterialButton(
             onPressed: onRetry,
