@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../generated/assets.gen.dart';
 
@@ -16,8 +17,9 @@ class RequestFailed extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Assets.images.error404.image(),
-          ),
+              child: SvgPicture.asset(
+                  Assets.svgs.error404.path) //Assets.images.error404.image(),
+              ),
           Text(text ?? 'Request Failed'),
           const SizedBox(height: 10),
           MaterialButton(
