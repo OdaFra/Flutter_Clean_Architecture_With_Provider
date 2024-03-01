@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/session_controller.dart';
+import '../controllers/home_controller.dart';
+import '../controllers/state/home_state.dart';
 import '../widgets/performers/trending_performers.dart';
 import '../widgets/widgets.dart';
 
@@ -21,33 +24,40 @@ class _HomeViewState extends State<HomeView> {
         Provider.of(context); //context.read<SessionController>();
     final user = sessionController.state!;
 
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            TrendingList(),
-            TrendingPerformers(),
-            SizedBox(height: 20)
-
-            // if (user.avatarPath != null)
-            //   Image.network(
-            //       'https://image.tmdb.org/t/p/w500${user.avatarPath}'),
-            // const SizedBox(height: 15),
-            // const Text('Home'),
-            // Text('${user.id}'),
-            // Text(user.username),
-            // const SizedBox(height: 15),
-            // TextButton(
-            //     onPressed: () async {
-            //       await sessionController.signOut();
-            //       if (mounted) {
-            //         Navigator.pushReplacementNamed(context, Routes.signIn);
-            //       }
-            //     },
-            //     child: const Text('Sign Out'))
-          ],
-        ),
+    return ChangeNotifierProvider(
+      create: (_) {
+        final homeController = HomeController(
+          HomeState(loading: true),
+          trendingRepository: context.read<TrendingRepository>(),
+        );
+        homeController.init();
+        
+        return homeController;
+      },
+      child: Scaffold(
+        body: SafeArea(
+            child: LayoutBuilder(
+          builder: (_, constraints) => RefreshIndicator(
+            onRefresh: () async {
+              setState(() {});
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: constraints.maxHeight,
+                child: const Column(
+                  children: [
+                    SizedBox(height: 10),
+                    TrendingList(),
+                    SizedBox(height: 10),
+                    TrendingPerformers(),
+                    SizedBox(height: 20)
+                  ],
+                ),
+              ),
+            ),
+          ),
+        )),
       ),
     );
   }
