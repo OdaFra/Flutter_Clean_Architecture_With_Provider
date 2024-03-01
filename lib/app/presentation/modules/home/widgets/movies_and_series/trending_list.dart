@@ -1,3 +1,69 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../../../core/utils/utils.dart';
+import '../../../../../domain/failures/http_request/http_request_failure.dart';
+import '../../../../../domain/models/media/media.dart';
+import '../../../../global/widgets/request_failed.dart';
+import '../../controllers/home_controller.dart';
+import 'trending_time_window.dart';
+import '../widgets.dart';
+
+typedef EitherListMedia = Either<HttpRequestFailure, List<Media>>;
+
+class TrendingList extends StatelessWidget {
+  const TrendingList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final HomeController homeController = context.watch<HomeController>();
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TrendingTimeWindow(
+            timeWindow: homeController.state.timeWindow,
+            onChanged: (timeWindow) {},
+          ),
+          const SizedBox(height: 10),
+          AspectRatio(
+              aspectRatio: 16 / 8,
+              child: LayoutBuilder(builder: (_, contrains) {
+                final width = contrains.maxHeight * 0.70;
+                final list = homeController.state.moviesAndSeries;
+                return Center(
+                  child: homeController.state.loading
+                      ? const CircularProgressIndicator()
+                      : homeController.state.moviesAndSeries == null
+                          ? RequestFailed(onRetry: () {})
+                          : ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              itemCount: list!.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (_, index) {
+                                final media = list[index];
+                                return SizedBox(
+                                    width: width,
+                                    height: double.infinity,
+                                    child: TrendingTitle(
+                                      media: media,
+                                      width: width,
+                                    ));
+                              },
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 6),
+                            ),
+                );
+              })),
+        ],
+      ),
+    );
+  }
+}
+
+// VERSION ANTERIOR
+/*
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
@@ -106,3 +172,6 @@ class _TrendingListState extends State<TrendingList> {
     );
   }
 }
+
+
+ */
