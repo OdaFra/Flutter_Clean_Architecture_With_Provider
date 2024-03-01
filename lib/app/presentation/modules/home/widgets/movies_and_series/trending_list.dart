@@ -16,12 +16,13 @@ class TrendingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = context.watch<HomeController>();
+    final state = homeController.state;
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TrendingTimeWindow(
-            timeWindow: homeController.state.timeWindow,
+            timeWindow: state.timeWindow,
             onChanged: (timeWindow) {},
           ),
           const SizedBox(height: 10),
@@ -29,17 +30,15 @@ class TrendingList extends StatelessWidget {
               aspectRatio: 16 / 8,
               child: LayoutBuilder(builder: (_, contrains) {
                 final width = contrains.maxHeight * 0.70;
-                final list = homeController.state.moviesAndSeries;
                 return Center(
-                  child: homeController.state.loading
-                      ? const CircularProgressIndicator()
-                      : homeController.state.moviesAndSeries == null
-                          ? RequestFailed(onRetry: () {})
-                          : ListView.separated(
+                    child: state.when(
+                        loading: (_) => const CircularProgressIndicator(),
+                        failed: (_) => RequestFailed(onRetry: () {}),
+                        loaded: (_, list) => ListView.separated(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
-                              itemCount: list!.length,
+                              itemCount: list.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (_, index) {
                                 final media = list[index];
@@ -53,8 +52,7 @@ class TrendingList extends StatelessWidget {
                               },
                               separatorBuilder: (_, __) =>
                                   const SizedBox(width: 6),
-                            ),
-                );
+                            )));
               })),
         ],
       ),

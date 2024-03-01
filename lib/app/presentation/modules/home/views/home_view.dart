@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/enums/enum.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/session_controller.dart';
 import '../controllers/home_controller.dart';
@@ -27,11 +28,11 @@ class _HomeViewState extends State<HomeView> {
     return ChangeNotifierProvider(
       create: (_) {
         final homeController = HomeController(
-          HomeState(loading: true),
+          HomeState.loading(TimeWindow.day),
           trendingRepository: context.read<TrendingRepository>(),
         );
         homeController.init();
-        
+
         return homeController;
       },
       child: Scaffold(
