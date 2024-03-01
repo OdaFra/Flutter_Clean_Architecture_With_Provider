@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../core/enums/enum.dart';
 import '../../../../../domain/models/media/media.dart';
+import '../../../../../domain/models/peformer/performer.dart';
 
 part 'home_state.freezed.dart';
 
@@ -12,6 +13,7 @@ class HomeState with _$HomeState {
   factory HomeState.loaded({
     required TimeWindow timeWindow,
     required List<Media> moviesAndSeries,
+    required List<Performer> performes,
   }) = HomeStateLoaded;
   // factory HomeState({
   //   required bool loading,

@@ -1,23 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/utils/utils.dart';
-import '../../../../../domain/failures/http_request/http_request_failure.dart';
-import '../../../../../domain/models/peformer/performer.dart';
-import '../../../../../domain/repositories/repositories.dart';
 import '../../../../global/widgets/request_failed.dart';
+import '../../controllers/home_controller.dart';
 import 'performers_title.dart';
 
-typedef EitherListPerformers = Either<HttpRequestFailure, List<Performer>>;
+class TrendingPerformersList extends StatefulWidget {
+  const TrendingPerformersList({super.key});
+
+  @override
+  State<TrendingPerformersList> createState() => _TrendingPerformersListState();
+}
+
+class _TrendingPerformersListState extends State<TrendingPerformersList> {
+  final _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final homeController = context.watch<HomeController>();
+    final state = homeController.state;
+    return Expanded(
+      child: state.when(
+          loading: (_) => const Center(child: CircularProgressIndicator()),
+          failed: (_) => RequestFailed(onRetry: () {}),
+          loaded: (_, __, performers) {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                PageView.builder(
+                    controller: _pageController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: performers.length,
+                    itemBuilder: (context, index) {
+                      final performer = performers[index];
+                      return PerformersTitle(performer: performer);
+                    }),
+                // Text('${_currentCard + 1}/${list.length}'),
+                Positioned(
+                  bottom: 20,
+                  child: AnimatedBuilder(
+                      animation: _pageController,
+                      builder: (_, __) {
+                        final currentCard = _pageController.page?.toInt() ?? 0;
+                        return Row(
+                          children: List.generate(
+                            performers.length,
+                            (index) => Icon(
+                              Icons.circle,
+                              size: 14,
+                              color: currentCard == index
+                                  ? Colors.white
+                                  : Colors.white30,
+                            ),
+                          ),
+                        );
+                        // Text(
+                        //     '${currentCard + 1}/${list.length}');
+                      }),
+                ),
+                const SizedBox(height: 10)
+              ],
+            );
+          }),
+    );
+  }
+}
+
+
+//VERSION ANTERIOR DE TRENDING PERFORMERSs
+
+/**
+ 
+ typedef EitherListPerformers = Either<HttpRequestFailure, List<Performer>>;
 
 class TrendingPerformers extends StatefulWidget {
   const TrendingPerformers({super.key});
 
   @override
-  State<TrendingPerformers> createState() => _TrendingPerformersState();
+  State<TrendingPerformers> createState() => _TrendingPerformersList();
 }
 
-class _TrendingPerformersState extends State<TrendingPerformers> {
+class _TrendingPerformersList extends State<TrendingPerformers> {
   late Future<EitherListPerformers> _future;
   late final PageController _pagecontroller;
 
@@ -103,3 +172,6 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
     );
   }
 }
+
+
+ */

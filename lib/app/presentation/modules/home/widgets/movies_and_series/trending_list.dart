@@ -32,9 +32,10 @@ class TrendingList extends StatelessWidget {
                 final width = contrains.maxHeight * 0.70;
                 return Center(
                     child: state.when(
-                        loading: (_) => const CircularProgressIndicator(),
+                        loading: (_) =>
+                            const Center(child: CircularProgressIndicator()),
                         failed: (_) => RequestFailed(onRetry: () {}),
-                        loaded: (_, list) => ListView.separated(
+                        loaded: (_, list, __) => ListView.separated(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),

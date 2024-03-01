@@ -37,28 +37,27 @@ class _HomeViewState extends State<HomeView> {
       },
       child: Scaffold(
         body: SafeArea(
-            child: LayoutBuilder(
-          builder: (_, constraints) => RefreshIndicator(
-            onRefresh: () async {
-              setState(() {});
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: SizedBox(
-                height: constraints.maxHeight,
-                child: const Column(
-                  children: [
-                    SizedBox(height: 10),
-                    TrendingList(),
-                    SizedBox(height: 10),
-                    TrendingPerformers(),
-                    SizedBox(height: 20)
-                  ],
+          child: LayoutBuilder(
+            builder: (context, constraints) => RefreshIndicator(
+              onRefresh: context.read<HomeController>().init,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: SizedBox(
+                  height: constraints.maxHeight,
+                  child: const Column(
+                    children: [
+                      SizedBox(height: 10),
+                      TrendingList(),
+                      SizedBox(height: 10),
+                      TrendingPerformersList(),
+                      SizedBox(height: 20)
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }
