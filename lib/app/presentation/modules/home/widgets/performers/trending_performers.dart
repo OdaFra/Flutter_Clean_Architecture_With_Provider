@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../global/widgets/request_failed.dart';
 import '../../controllers/home_controller.dart';
+import '../../controllers/state/home_state.dart';
 import 'performers_title.dart';
 
 class TrendingPerformersList extends StatefulWidget {
@@ -24,21 +25,27 @@ class _TrendingPerformersListState extends State<TrendingPerformersList> {
   @override
   Widget build(BuildContext context) {
     final homeController = context.watch<HomeController>();
-    final state = homeController.state;
+    final performersState = homeController.state.performersState;
     return Expanded(
-      child: state.when(
-          loading: (_) => const Center(child: CircularProgressIndicator()),
-          failed: (_) => RequestFailed(onRetry: () {}),
-          loaded: (_, __, performers) {
+      child: performersState.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          failed: () => RequestFailed(
+                onRetry: () {
+                  homeController.loadPerformers(
+                    performersState: const PerformersState.loading(),
+                  );
+                },
+              ),
+          loaded: (list) {
             return Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 PageView.builder(
                     controller: _pageController,
                     scrollDirection: Axis.horizontal,
-                    itemCount: performers.length,
+                    itemCount: list.length,
                     itemBuilder: (context, index) {
-                      final performer = performers[index];
+                      final performer = list[index];
                       return PerformersTitle(performer: performer);
                     }),
                 // Text('${_currentCard + 1}/${list.length}'),
@@ -50,7 +57,7 @@ class _TrendingPerformersListState extends State<TrendingPerformersList> {
                         final currentCard = _pageController.page?.toInt() ?? 0;
                         return Row(
                           children: List.generate(
-                            performers.length,
+                            list.length,
                             (index) => Icon(
                               Icons.circle,
                               size: 14,
