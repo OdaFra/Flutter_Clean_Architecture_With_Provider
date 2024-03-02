@@ -1,6 +1,6 @@
-# Movie App with clean architecture
+# Movie App con Arquitectura Limpia
 
-## 🎦 🎞️ 📽️ 🎬 🍿 👀
+## 😄 👀 🎭 📱 🎦 🎬 🍿
 
 Este proyecto tiene como finalidad construir una aplicación mobile implementando arquitectura limpia, el cual esta pensado para su posterior escalabilidad.
 Para las vistas, actualizaciones e inserción de datos, se optó por la dependencia o paquete **Provider**, como manejador de estado  durante el proceso de desarrollo de la app.
