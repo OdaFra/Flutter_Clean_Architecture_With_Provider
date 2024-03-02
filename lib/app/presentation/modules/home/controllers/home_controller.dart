@@ -1,3 +1,4 @@
+import '../../../../core/enums/timeWindows.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../state_notifier.dart';
 import 'state/home_state.dart';
@@ -11,25 +12,67 @@ class HomeController extends StateNotifier<HomeState> {
   final TrendingRepository trendingRepository;
 
   Future<void> init() async {
-    final result =
-        await trendingRepository.getMoviesAndSeries(state.timeWindow);
-    final performersRes = await trendingRepository.getPerformers();
+    await loadMoviesAndSeries();
+    await loadPerformers();
+  }
+
+  Future<void> loadMoviesAndSeries({
+    MoviesAndSeriesState? moviesAndSeriesState,
+  }) async {
+    if (moviesAndSeriesState != null) {
+      state = state.copyWith(
+        moviesAndSeriesState: moviesAndSeriesState,
+      );
+    }
+
+    final result = await trendingRepository.getMoviesAndSeries(
+      state.moviesAndSeriesState.timeWindow,
+    );
 
     result.when(left: (_) {
-      state = HomeState.failed(state.timeWindow);
+      state = state.copyWith(
+        moviesAndSeriesState: MoviesAndSeriesState.failed(
+          state.moviesAndSeriesState.timeWindow,
+        ),
+      );
     }, right: (list) {
-      performersRes.when(
-        left: (_) {
-          HomeState.failed(state.timeWindow);
-        },
-        right: (performersList) {
-          state = HomeState.loaded(
-            timeWindow: state.timeWindow,
-            moviesAndSeries: list,
-            performes: performersList,
-          );
-        },
+      state = state.copyWith(
+        moviesAndSeriesState: MoviesAndSeriesState.loaded(
+          timeWindow: state.moviesAndSeriesState.timeWindow,
+          list: list,
+        ),
       );
     });
+  }
+
+  Future<void> loadPerformers({PerformersState? performersState}) async {
+    if (performersState != null) {
+      state = state.copyWith(
+        performersState: performersState,
+      );
+    }
+
+    final performersRes = await trendingRepository.getPerformers();
+
+    performersRes.when(left: (_) {
+      state = state.copyWith(
+        performersState: const PerformersState.failed(),
+      );
+    }, right: (list) {
+      state = state.copyWith(
+        performersState: PerformersState.loaded(list),
+      );
+    });
+  }
+
+  void onTimeWindowChanged(TimeWindow timeWindow) {
+    if (state.moviesAndSeriesState.timeWindow != timeWindow) {
+      state = state.copyWith(
+        moviesAndSeriesState: state.moviesAndSeriesState.copyWith(
+          timeWindow: timeWindow,
+        ),
+      );
+      loadMoviesAndSeries();
+    }
   }
 }
