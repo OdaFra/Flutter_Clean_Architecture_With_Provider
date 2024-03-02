@@ -5,6 +5,7 @@ import '../../../../../domain/failures/http_request/http_request_failure.dart';
 import '../../../../../domain/models/media/media.dart';
 import '../../../../global/widgets/request_failed.dart';
 import '../../controllers/home_controller.dart';
+import '../../controllers/state/home_state.dart';
 import 'trending_time_window.dart';
 import '../widgets.dart';
 
@@ -16,14 +17,15 @@ class TrendingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = context.watch<HomeController>();
-    final state = homeController.state;
+    final moviesAndSeriesState = homeController.state.moviesAndSeriesState;
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TrendingTimeWindow(
-            timeWindow: state.timeWindow,
-            onChanged: (timeWindow) {},
+            timeWindow: moviesAndSeriesState.timeWindow,
+            onChanged: (timeWindow) =>
+                homeController.onTimeWindowChanged(timeWindow),
           ),
           const SizedBox(height: 10),
           AspectRatio(
@@ -31,11 +33,20 @@ class TrendingList extends StatelessWidget {
               child: LayoutBuilder(builder: (_, contrains) {
                 final width = contrains.maxHeight * 0.70;
                 return Center(
-                    child: state.when(
+                    child: moviesAndSeriesState.when(
                         loading: (_) =>
                             const Center(child: CircularProgressIndicator()),
-                        failed: (_) => RequestFailed(onRetry: () {}),
-                        loaded: (_, list, __) => ListView.separated(
+                        failed: (_) => RequestFailed(
+                              onRetry: () {
+                                homeController.loadMoviesAndSeries(
+                                  moviesAndSeriesState:
+                                      MoviesAndSeriesState.loading(
+                                    moviesAndSeriesState.timeWindow,
+                                  ),
+                                );
+                              },
+                            ),
+                        loaded: (_, list) => ListView.separated(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
