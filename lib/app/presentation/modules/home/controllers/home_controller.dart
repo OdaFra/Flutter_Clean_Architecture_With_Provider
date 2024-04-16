@@ -29,20 +29,18 @@ class HomeController extends StateNotifier<HomeState> {
       state.moviesAndSeriesState.timeWindow,
     );
 
-    result.when(left: (_) {
-      state = state.copyWith(
-        moviesAndSeriesState: MoviesAndSeriesState.failed(
-          state.moviesAndSeriesState.timeWindow,
-        ),
-      );
-    }, right: (list) {
-      state = state.copyWith(
-        moviesAndSeriesState: MoviesAndSeriesState.loaded(
-          timeWindow: state.moviesAndSeriesState.timeWindow,
-          list: list,
-        ),
-      );
-    });
+    state = result.when(
+        left: (_) => state.copyWith(
+              moviesAndSeriesState: MoviesAndSeriesState.failed(
+                state.moviesAndSeriesState.timeWindow,
+              ),
+            ),
+        right: (list) => state.copyWith(
+              moviesAndSeriesState: MoviesAndSeriesState.loaded(
+                timeWindow: state.moviesAndSeriesState.timeWindow,
+                list: list,
+              ),
+            ));
   }
 
   Future<void> loadPerformers({PerformersState? performersState}) async {
@@ -52,17 +50,15 @@ class HomeController extends StateNotifier<HomeState> {
       );
     }
 
-    final performersRes = await trendingRepository.getPerformers();
+    final performersResult = await trendingRepository.getPerformers();
 
-    performersRes.when(left: (_) {
-      state = state.copyWith(
-        performersState: const PerformersState.failed(),
-      );
-    }, right: (list) {
-      state = state.copyWith(
-        performersState: PerformersState.loaded(list),
-      );
-    });
+    state = performersResult.when(
+        left: (_) => state.copyWith(
+              performersState: const PerformersState.failed(),
+            ),
+        right: (list) => state.copyWith(
+              performersState: PerformersState.loaded(list),
+            ));
   }
 
   void onTimeWindowChanged(TimeWindow timeWindow) {
