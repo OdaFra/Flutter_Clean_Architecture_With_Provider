@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
   extended_image: ^8.1.1
+  extended_image_library: ^4.0.4
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.0.2
@@ -44,7 +45,6 @@ dependencies:
   provider: ^6.0.5
 
 dev_dependencies:
-  # analyzer: ^6.4.1
   build_runner: ^2.4.5
   flutter_gen: ^5.4.0
   flutter_gen_runner: ^5.4.0
