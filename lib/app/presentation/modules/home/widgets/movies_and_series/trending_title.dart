@@ -20,12 +20,11 @@ class TrendingTitle extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (media.type == MediaType.movie) {
-          // Navigator.pushNamed(context, '/movie', arguments: media.id);
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => MovieView(movieId: media.id),
-              settings: RouteSettings(name: '/movie/${media.id}'),
+              //settings: RouteSettings(name: '/movie/${media.id}'),
             ),
           );
         }
