@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../global/controllers/favorite/favorite_controller.dart';
 import '../../../../global/controllers/session_controller.dart';
 import '../../../../router/router.dart';
 import '../../controllers/signIn_controller.dart';
@@ -44,12 +45,6 @@ class SubmitButton extends StatelessWidget {
           unauthorized: () => 'Invalid password',
           unkonwn: () => 'Internal error',
         );
-        // final message = {
-        //   SignInFailure.notFound: 'Not Found',
-        //   SignInFailure.unauthorized: 'Invalid password',
-        //   SignInFailure.unknown: 'Internal error',
-        //   SignInFailure.network: 'Network error'
-        // }[failure];
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -59,6 +54,8 @@ class SubmitButton extends StatelessWidget {
       },
       right: (user) {
         final sessionController = context.read<SessionController>();
+        final favoriteController = context.read<FavoriteController>();
+        favoriteController.init();
         sessionController.setUser(user!);
         Navigator.pushReplacementNamed(
           context,

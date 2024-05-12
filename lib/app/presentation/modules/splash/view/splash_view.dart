@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/repositories/repositories.dart';
+import '../../../global/controllers/favorite/favorite_controller.dart';
 import '../../../global/controllers/session_controller.dart';
 import '../../../router/router.dart';
 
@@ -29,25 +30,24 @@ class _SplashState extends State<Splash> {
     final accountRepository = context.read<AccountRepository>();
     final hasInternet = await connectivityRepository.hastInternet;
     final sessionController = context.read<SessionController>();
+    final favoriteController = context.read<FavoriteController>();
 
-    if (hasInternet) {
-      final isSignedIn = await authenticationRepository.isSignedIn;
-      if (isSignedIn) {
-        final user = await accountRepository.getUserData();
+    if (!hasInternet) {
+      return _goTo(Routes.offline);
+    }
 
-        if (mounted) {
-          if (user != null) {
-            sessionController.setUser(user);
-            return _goTo(Routes.home);
-          } else {
-            return _goTo(Routes.signIn);
-          }
-        }
-      } else if (mounted) {
-        _goTo(Routes.signIn);
-      }
-    } else {
-      _goTo(Routes.offline);
+    final isSignedIn = await authenticationRepository.isSignedIn;
+
+    if (!isSignedIn) {
+      return _goTo(Routes.signIn);
+    }
+
+    final user = await accountRepository.getUserData();
+
+    if (user != null) {
+      sessionController.setUser(user);
+      favoriteController.init();
+      return _goTo(Routes.home);
     }
   }
 
