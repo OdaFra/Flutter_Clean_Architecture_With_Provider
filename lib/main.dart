@@ -19,6 +19,8 @@ import 'app/data/services/remote/movie_api.dart';
 import 'app/data/services/remote/trending_api.dart';
 import 'app/domain/repositories/repositories.dart';
 import 'app/my_app.dart';
+import 'app/presentation/global/controllers/favorite/favorite_controller.dart';
+import 'app/presentation/global/controllers/favorite/favorite_state.dart';
 import 'app/presentation/global/controllers/session_controller.dart';
 
 void main() async {
@@ -32,7 +34,10 @@ void main() async {
     baseUrl: dotenv.env['BASE_URL']!,
     apiKey: dotenv.env['TMDB_KEY']!,
   );
-  final accountApi = AccountApi(http);
+  final accountApi = AccountApi(
+    http,
+    sessionService,
+  );
 
   runApp(
     MultiProvider(
@@ -58,6 +63,12 @@ void main() async {
         ChangeNotifierProvider<SessionController>(
           create: (context) => SessionController(
             authenticationRepository: context.read<AuthenticationRepository>(),
+          ),
+        ),
+        ChangeNotifierProvider<FavoriteController>(
+          create: (context) => FavoriteController(
+            FavoriteState.loading(),
+            accountRepository: context.read<AccountRepository>(),
           ),
         ),
       ],
