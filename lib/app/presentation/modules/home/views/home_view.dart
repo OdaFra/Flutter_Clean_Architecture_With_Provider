@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/session_controller.dart';
+import '../../../router/routes.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/state/home_state.dart';
 import '../widgets/performers/trending_performers.dart';
@@ -34,6 +35,21 @@ class _HomeViewState extends State<HomeView> {
         return homeController;
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.favorite,
+                  );
+                },
+                icon: const Icon(Icons.favorite)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.person))
+          ],
+        ),
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) => RefreshIndicator(
