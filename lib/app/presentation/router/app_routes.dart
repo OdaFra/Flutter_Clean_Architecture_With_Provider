@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../modules/favorites/views/favorite_view.dart';
 import '../modules/home/views/views.dart';
 import '../modules/modules.dart';
 import '../modules/offline/offline.dart';
@@ -11,6 +12,7 @@ Map<String, Widget Function(BuildContext)> get appRoutes {
     Routes.signIn: (context) => const SignInView(),
     Routes.home: (context) => const HomeView(),
     Routes.offline: (context) => const OfflineView(),
+    Routes.favorite: (context) => const FavoriteView(),
     // Routes.movie: (context) => MovieView(
     //       movieId: ModalRoute.of(context)?.settings.arguments as int,
     //     )
