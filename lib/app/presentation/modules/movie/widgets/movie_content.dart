@@ -1,7 +1,4 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../../global/global.dart';
 import '../controllers/state/movie_state.dart';
 import 'movie_cast.dart';
 import 'movie_header.dart';
