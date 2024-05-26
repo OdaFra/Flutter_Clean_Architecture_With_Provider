@@ -12,6 +12,8 @@ class FavoriteController extends StateNotifier<FavoriteState> {
   final AccountRepository accountRepository;
 
   Future<void> init() async {
+    state = FavoriteState.loading();
+
     final moviesResult = await accountRepository.getFavorites(MediaType.movie);
 
     state = await moviesResult.when(
