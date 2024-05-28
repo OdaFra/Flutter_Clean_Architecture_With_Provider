@@ -4,16 +4,23 @@ import '../../../../core/utils/utils.dart';
 import '../../../../domain/failures/sign_in_failure/sign_in_failure.dart';
 import '../../../../domain/models/models.dart';
 import '../../../../domain/repositories/repositories.dart';
+import '../../../global/controllers/favorite/favorite_controller.dart';
+import '../../../global/global.dart';
 import '../../../state_notifier.dart';
+import '../../favorites/widgets/favorite_content.dart';
 import 'state/signIn_state.dart';
 
 class SigInController extends StateNotifier<SignInState> {
   SigInController(
     super.state, {
     required this.authenticationRepository,
+    required this.favoriteController,
+    required this.sessionController,
   });
 
   final AuthenticationRepository authenticationRepository;
+  final FavoriteController favoriteController;
+  final SessionController sessionController;
 
   void onUsernameChanged(String text) {
     onlyUpdate(
@@ -42,7 +49,10 @@ class SigInController extends StateNotifier<SignInState> {
       left: (_) => state = state.copyWith(
         fetching: false,
       ),
-      right: (_) => null,
+      right: (user) {
+        sessionController.setUser(user);
+        favoriteController.init();
+      },
     );
     return result;
   }

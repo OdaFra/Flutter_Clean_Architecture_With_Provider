@@ -52,16 +52,10 @@ class SubmitButton extends StatelessWidget {
           ),
         );
       },
-      right: (user) {
-        final sessionController = context.read<SessionController>();
-        final favoriteController = context.read<FavoriteController>();
-        favoriteController.init();
-        sessionController.setUser(user!);
-        Navigator.pushReplacementNamed(
-          context,
-          Routes.home,
-        );
-      },
+      right: (_) => Navigator.pushReplacementNamed(
+        context,
+        Routes.home,
+      ),
     );
   }
 }
