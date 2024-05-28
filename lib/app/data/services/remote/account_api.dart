@@ -39,10 +39,7 @@ class AccountApi {
         queryParameters: {'session_id': sessionId}, onSuccess: (json) {
       final list = json['results'] as List;
       final iterableList = list.map((e) {
-        final media = Media.fromJson({
-          ...e,
-          'media_type': type.name
-        });
+        final media = Media.fromJson({...e, 'media_type': type.name});
         return MapEntry(media.id, media);
       });
       final map = <int, Media>{};
@@ -53,6 +50,31 @@ class AccountApi {
     return result.when(
       left: handleHttpFailure,
       right: (map) => Either.right(map),
+    );
+  }
+
+  Future<Either<HttpRequestFailure, void>> markAsFavorite({
+    required int mediaId,
+    required MediaType type,
+    required bool favorite,
+  }) async {
+    final accountId = await _sessionService.accountId;
+    final sessionId = await _sessionService.sessionId ?? '';
+
+    final result = await _httpManagement.request(
+      '/account/$accountId/favorite',
+      queryParameters: {'session_id': sessionId},
+      body: {
+        'media_type': type.name,
+        'media_id': mediaId,
+        'favorite': favorite
+      },
+      method: HttpMethod.post,
+      onSuccess: (_) => null,
+    );
+    return result.when(
+      left: handleHttpFailure,
+      right: (_) => Either.right(null),
     );
   }
 }
