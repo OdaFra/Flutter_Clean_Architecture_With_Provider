@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../domain/models/media/media.dart';
 import '../../../../global/global.dart';
+import '../../../../utils/go_to_media_details.dart';
 import '../../../movie/views/movie_view.dart';
 
 class TrendingTitle extends StatelessWidget {
@@ -18,17 +19,7 @@ class TrendingTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        if (media.type == MediaType.movie) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MovieView(movieId: media.id),
-              //settings: RouteSettings(name: '/movie/${media.id}'),
-            ),
-          );
-        }
-      },
+      onTap: () => goToMediaDetails(context, media),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: SizedBox(
