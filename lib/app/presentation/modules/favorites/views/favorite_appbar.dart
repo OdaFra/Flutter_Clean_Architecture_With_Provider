@@ -13,29 +13,20 @@ class FavoritesAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       iconTheme: const IconThemeData(color: Colors.black),
       bottom: TabBar(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        indicator: _Decoration(),
+        padding: const EdgeInsets.symmetric(vertical: 3.5),
+        indicator: const _Decoration(
+          color: Colors.blue,
+          width: 14,
+        ),
         indicatorSize: TabBarIndicatorSize.label,
         labelColor: Colors.black,
         controller: tabController,
         tabs: const [
-          SizedBox(
-            height: 30,
-            child: Tab(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text('Movies'),
-              ),
-            ),
+          Tab(
+            child: Text('Movies'),
           ),
-          SizedBox(
-            height: 30,
-            child: Tab(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text('Series'),
-              ),
-            ),
+          Tab(
+            child: Text('Series'),
           ),
         ],
       ),
@@ -47,23 +38,43 @@ class FavoritesAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _Decoration extends Decoration {
+  final double width;
+  final Color color;
+
+  const _Decoration({
+    required this.width,
+    required this.color,
+  });
   @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) => _Painter();
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) =>
+      _Painter(color: color, width: width);
 }
 
 class _Painter extends BoxPainter {
+  final double width;
+  final Color color;
+
+  const _Painter({
+    required this.width,
+    required this.color,
+  });
   @override
   void paint(
     Canvas canvas,
     Offset offset,
     ImageConfiguration configuration,
   ) {
-    final paint = Paint()..color = Colors.black38;
+    final paint = Paint()..color = color;
     final size = configuration.size ?? Size.zero;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromLTWH(size.width * 0.45 + offset.dx, size.height * 0.80, 14, 6),
+        Rect.fromLTWH(
+          size.width * 0.45  + offset.dx,
+          size.height * 0.80,
+          width,
+          width * 0.4,
+        ),
         const Radius.circular(4),
       ),
       paint,
