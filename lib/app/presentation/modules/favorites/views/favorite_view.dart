@@ -45,7 +45,7 @@ class _FavoriteViewState extends State<FavoriteView>
           onRetry: () => controller.init(),
         ),
         loaded: (state) => FavoriteContent(
-          state: controller,
+          state: state,
           tabController: _tabController,
         ),
       ),
