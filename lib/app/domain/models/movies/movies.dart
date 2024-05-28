@@ -19,7 +19,7 @@ class Movie with _$Movie {
     @JsonKey(name: 'vote_average') required double voteAverage,
     @JsonKey(readValue: readTitleValue) required String title,
     @JsonKey(readValue: readOriginalValue) required String originalTitle,
-    @JsonKey(name: 'backdrop_path') required String backdropPath,
+    @JsonKey(name: 'backdrop_path') required String? backdropPath,
   }) = _Movie;
 
   factory Movie.fromJson(Json json) => _$MovieFromJson(json);
