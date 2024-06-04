@@ -33,6 +33,7 @@ class HttpManagement {
     Map<String, String> queryParameters = const {},
     Map<String, dynamic> body = const {},
     bool useApiKey = true,
+    Duration timeout = const Duration(seconds: 10),
   }) async {
     Map<String, dynamic> logs = {};
     StackTrace? stackTrace;
@@ -72,28 +73,34 @@ class HttpManagement {
 
       switch (method) {
         case HttpMethod.get:
-          response = await _client.get(url);
+          response = await _client.get(url).timeout(timeout);
           break;
         case HttpMethod.post:
-          response = await _client.post(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .post(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.patch:
-          response = await _client.patch(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .patch(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.delete:
-          response = await _client.delete(
-            url,
-            headers: headers,
-            body: bodyString,
-          );
+          response = await _client
+              .delete(
+                url,
+                headers: headers,
+                body: bodyString,
+              )
+              .timeout(timeout);
           break;
         case HttpMethod.put:
           response = await _client.put(
