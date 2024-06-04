@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../global/controllers/favorite/favorite_controller.dart';
+import '../../../utils/mark_as_favorite.dart';
 import '../controllers/movie_controller.dart';
 
 class MovieAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,7 +20,11 @@ class MovieAppBar extends StatelessWidget implements PreferredSizeWidget {
                 favoriteController.state.maybeMap(
                     orElse: () => const SizedBox(),
                     loaded: (favoriteState) => IconButton(
-                        onPressed: () {},
+                        onPressed: () => markAsFavorite(
+                              context: context,
+                              media: movieState.movie.toMedia(),
+                              mounted: () => controller.mounted,
+                            ),
                         icon: Icon(
                           favoriteState.movies.containsKey(movieState.movie.id)
                               ? Icons.favorite
