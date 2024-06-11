@@ -47,7 +47,11 @@ class _HomeViewState extends State<HomeView> {
                   );
                 },
                 icon: const Icon(Icons.favorite)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.person))
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.profile);
+                },
+                icon: const Icon(Icons.person))
           ],
         ),
         body: SafeArea(
