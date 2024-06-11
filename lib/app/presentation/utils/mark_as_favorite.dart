@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/models/media/media.dart';
 import '../global/controllers/favorite/favorite_controller.dart';
+import '../global/dialogs/show_loader.dart';
 
 Future<void> markAsFavorite({
   required BuildContext context,
@@ -11,7 +11,9 @@ Future<void> markAsFavorite({
   required bool Function() mounted,
 }) async {
   final favoriteController = context.read<FavoriteController>();
-  final result = await favoriteController.markAsFavorite(media);
+  final result =
+      await showLoader(context, favoriteController.markAsFavorite(media));
+  // final result = await favoriteController.markAsFavorite(media);
 
   if (!mounted()) {
     return;
