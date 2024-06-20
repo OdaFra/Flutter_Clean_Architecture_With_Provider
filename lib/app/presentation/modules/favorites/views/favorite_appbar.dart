@@ -7,11 +7,9 @@ class FavoritesAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      titleTextStyle: const TextStyle(color: Colors.black),
       title: const Text('Favorites'),
       centerTitle: true,
       elevation: 0,
-      iconTheme: const IconThemeData(color: Colors.black),
       bottom: TabBar(
         padding: const EdgeInsets.symmetric(vertical: 3.5),
         indicator: const _Decoration(
@@ -19,7 +17,6 @@ class FavoritesAppBar extends StatelessWidget implements PreferredSizeWidget {
           width: 14,
         ),
         indicatorSize: TabBarIndicatorSize.label,
-        labelColor: Colors.black,
         controller: tabController,
         tabs: const [
           Tab(
@@ -70,7 +67,7 @@ class _Painter extends BoxPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(
-          size.width * 0.45  + offset.dx,
+          size.width * 0.45 + offset.dx,
           size.height * 0.80,
           width,
           width * 0.4,

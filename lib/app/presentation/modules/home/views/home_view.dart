@@ -36,8 +36,6 @@ class _HomeViewState extends State<HomeView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1,
           actions: [
             IconButton(
                 onPressed: () {

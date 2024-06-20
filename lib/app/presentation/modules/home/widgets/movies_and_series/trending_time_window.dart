@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/enums/timeWindows.dart';
+import '../../../../global/extensions/build_context_ext.dart';
+import '../../../../global/themes/app_colors.dart';
 
 class TrendingTimeWindow extends StatelessWidget {
   const TrendingTimeWindow(
@@ -22,13 +24,13 @@ class TrendingTimeWindow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: Material(
-              color: Colors.grey.shade300, // const Color(0xfff0f0f0),
+              color:
+                  context.darkMode ? AppColors.dark : const Color(0xfff0f0f0),
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
                   alignedDropdown: true,
                   child: DropdownButton<TimeWindow>(
                       borderRadius: BorderRadius.circular(20),
-                      dropdownColor: Colors.grey.shade200,
                       underline: const SizedBox(),
                       value: timeWindow,
                       isDense: true,
