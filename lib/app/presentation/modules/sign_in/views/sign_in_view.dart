@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/favorite/favorite_controller.dart';
 import '../../../global/global.dart';
-import '../../favorites/widgets/favorite_content.dart';
 import '../controllers/signIn_controller.dart';
 import '../controllers/state/signIn_state.dart';
 import 'widgets/submit_button.dart';

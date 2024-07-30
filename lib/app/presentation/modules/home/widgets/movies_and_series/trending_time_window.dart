@@ -16,10 +16,7 @@ class TrendingTimeWindow extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15),
       child: Row(
         children: [
-          const Text(
-            'TRENDING',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text('TRENDING', style: context.textTheme.titleSmall),
           const Spacer(),
           ClipRRect(
             borderRadius: BorderRadius.circular(30),

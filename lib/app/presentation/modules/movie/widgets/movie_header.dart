@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../domain/models/movies/movies.dart';
+import '../../../global/extensions/build_context_ext.dart';
 import '../../../global/global.dart';
 
 class MovieHeader extends StatelessWidget {
@@ -47,10 +48,8 @@ class MovieHeader extends StatelessWidget {
                     children: [
                       Text(
                         movie.title,
-                        style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: context.textTheme.titleSmall
+                            ?.copyWith(color: Colors.white),
                       ),
                       const SizedBox(height: 10),
                       Wrap(
@@ -95,11 +94,7 @@ class MovieHeader extends StatelessWidget {
                         ),
                         Text(
                           movie.voteAverage.toStringAsPrecision(2),
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          style: context.textTheme.titleLarge,
                         ),
                       ],
                     ),

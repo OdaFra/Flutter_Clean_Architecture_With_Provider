@@ -7,7 +7,6 @@ import '../../../../domain/repositories/repositories.dart';
 import '../../../global/controllers/favorite/favorite_controller.dart';
 import '../../../global/global.dart';
 import '../../../state_notifier.dart';
-import '../../favorites/widgets/favorite_content.dart';
 import 'state/signIn_state.dart';
 
 class SigInController extends StateNotifier<SignInState> {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../global/extensions/build_context_ext.dart';
 import '../controllers/state/movie_state.dart';
 import 'movie_cast.dart';
 import 'movie_header.dart';
@@ -18,10 +19,7 @@ class MovieContent extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Text(
             movie.overview,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
+            style: context.textTheme.titleSmall,
           ),
         ),
         MovieCast(movieId: movie.id),

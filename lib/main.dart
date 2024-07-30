@@ -22,7 +22,9 @@ import 'app/my_app.dart';
 import 'app/presentation/global/controllers/favorite/favorite_controller.dart';
 import 'app/presentation/global/controllers/favorite/favorite_state.dart';
 import 'app/presentation/global/controllers/session_controller.dart';
+import 'app/presentation/global/extensions/build_context_ext.dart';
 import 'app/presentation/global/themes/theme_controller.dart';
+import 'dart:ui' as ui;
 
 void main() async {
   setPathUrlStrategy();
@@ -39,7 +41,8 @@ void main() async {
     http,
     sessionService,
   );
-
+  //TODO: Revisar al ternativa a ui.window.platformBrightness
+  final bool darkMode = ui.window.platformBrightness == Brightness.dark;
   runApp(
     MultiProvider(
       providers: [
@@ -62,7 +65,8 @@ void main() async {
           create: (_) => MovieRepositoryImpl(MovieApi(http)),
         ),
         ChangeNotifierProvider<ThemeController>(
-            create: (_) => ThemeController(false)),
+          create: (_) => ThemeController(darkMode),
+        ),
         ChangeNotifierProvider<SessionController>(
           create: (context) => SessionController(
             authenticationRepository: context.read<AuthenticationRepository>(),

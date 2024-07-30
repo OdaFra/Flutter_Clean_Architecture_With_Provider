@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../domain/models/media/media.dart';
 import '../../../global/global.dart';
 import '../../../utils/go_to_media_details.dart';
-import '../../movie/views/movie_view.dart';
+
 
 class FavoriteList extends StatefulWidget {
   const FavoriteList({super.key, required this.items});
