@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'app/data/http/httpManagement.dart';
-import 'app/data/repository_implementation/account_repository_impl.dart';
-import 'app/data/repository_implementation/authentication_repository_impl.dart';
-import 'app/data/repository_implementation/connectivity_repository_impl.dart';
-import 'app/data/repository_implementation/movie_repository_impl.dart';
-import 'app/data/repository_implementation/trending_repository_impl.dart';
+import 'app/data/repository_implementation/repository_implementation.dart';
 import 'app/data/services/local/session_service.dart';
 import 'app/data/services/remote/account_api.dart';
 import 'app/data/services/remote/authentication_api.dart';
@@ -22,12 +19,12 @@ import 'app/my_app.dart';
 import 'app/presentation/global/controllers/favorite/favorite_controller.dart';
 import 'app/presentation/global/controllers/favorite/favorite_state.dart';
 import 'app/presentation/global/controllers/session_controller.dart';
-import 'app/presentation/global/extensions/build_context_ext.dart';
 import 'app/presentation/global/themes/theme_controller.dart';
 import 'dart:ui' as ui;
 
 void main() async {
   setPathUrlStrategy();
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   final sessionService = SessionService(
     const FlutterSecureStorage(),
@@ -42,13 +39,19 @@ void main() async {
     sessionService,
   );
   //TODO: Revisar al ternativa a ui.window.platformBrightness
-  final bool darkMode = ui.window.platformBrightness == Brightness.dark;
+  final bool systemDarkMode = ui.window.platformBrightness == Brightness.dark;
+
+  final preferences = await SharedPreferences.getInstance();
+
   runApp(
     MultiProvider(
       providers: [
         Provider<AccountRepository>(
           create: (context) =>
               AccountRepositoryImpl(accountApi, sessionService),
+        ),
+        Provider<PreferencesRepository>(
+          create: (_) => PreferencesRepositoryImpl(preferences),
         ),
         Provider<ConnectivityRepository>(
           create: (context) => ConnectivityRepositoryImpl(
@@ -65,7 +68,14 @@ void main() async {
           create: (_) => MovieRepositoryImpl(MovieApi(http)),
         ),
         ChangeNotifierProvider<ThemeController>(
-          create: (_) => ThemeController(darkMode),
+          create: (context) {
+            final preferencesRepository = context.read<PreferencesRepository>();
+            final isDarkMode = preferencesRepository.darkMode ?? systemDarkMode;
+            return ThemeController(
+              isDarkMode,
+              preferencesRepository: preferencesRepository,
+            );
+          },
         ),
         ChangeNotifierProvider<SessionController>(
           create: (context) => SessionController(
