@@ -1,4 +1,4 @@
-import '../../core/enums/enum.dart';
+import '../../core/enums/enums.dart';
 import '../../core/utils/utils.dart';
 import '../failures/http_request/http_request_failure.dart';
 import '../models/media/media.dart';

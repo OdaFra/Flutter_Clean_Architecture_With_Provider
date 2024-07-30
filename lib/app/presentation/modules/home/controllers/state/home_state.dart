@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../../core/enums/enum.dart';
+import '../../../../../core/enums/enums.dart';
 import '../../../../../domain/models/media/media.dart';
 import '../../../../../domain/models/peformer/performer.dart';
 
